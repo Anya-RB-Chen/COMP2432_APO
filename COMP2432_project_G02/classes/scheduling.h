@@ -8,7 +8,7 @@
 #include "appointment.h"
 
 typedef enum  SCHEDULING_ALGORITHM{
-    FCFS = 0 , Priority = 1 , ALL//...
+    FCFS = 0 , Priority = 1 , SRT = 2, RR = 3//...
 } SCHEDULING_ALGORITHM;
 
 SCHEDULING_ALGORITHM getSCHEDULING_ALGORITHM (int mode);
@@ -23,5 +23,7 @@ typedef enum RESCHEDULING_ALGORITHM{
 //row 2: accept 1 / reject 0
 int** FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize);
 int** Priority_schedule_algorithm (SAppointment ap_array[],  int arraySize);
+int** SRT_schedule_algorithm (SAppointment ap_array[],  int arraySize);
+int** RR_schedule_algorithm (SAppointment ap_array[],  int arraySize);
 
 #endif //COMP2432_PROJECT_G02_SCHEDULING_H

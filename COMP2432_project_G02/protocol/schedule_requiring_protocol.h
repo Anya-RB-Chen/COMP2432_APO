@@ -17,7 +17,7 @@ extern const int SCHEDULE_REQUERING_PROTOCOL_RESPONSE_MESSAGE_MAXIMUM_LENGTH  ;
 //recipient:  parent process / APO
 //server: child process / user
 void  scheduleRequering_protocol_serverAPI(char* requestMessage, int wp, SAppointment ap_array[], int arraySize);
-int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int rp, int wp, int** personalSchedule);
+int**  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int rp, int wp);
 
 
 //level 2: presentation layer interface
@@ -25,8 +25,8 @@ void scheduleRequering_protocol_requestMessage_encoding(SCHEDULING_ALGORITHM alg
 
 SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *message);
 
-void scheduleRequering_protocol_responseMessage_encoding(int** personalScheduleArray, char* dst);
+char*  scheduleRequering_protocol_responseMessage_encoding(int** personalScheduleArray, int scheduleNum);
 
-int scheduleRequering_protocol_responseMessage_decoding(char *message, int** personalSchedule);
+int**  scheduleRequering_protocol_responseMessage_decoding(char *message);
 
 #endif //COMP2432_PROJECT_G02_SCHEDULE_REQUIRING_PROTOCOL_H
