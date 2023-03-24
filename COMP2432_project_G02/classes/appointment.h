@@ -19,8 +19,8 @@ typedef struct SAppointment {
     struct STime startTime, endTime;
     float duration; //0.5
     int apIndex;
-    char* caller;
-    char** callee;
+    char caller[10];
+    char callee[10][10];
     int numberOfCallee;
 }  SAppointment;
 

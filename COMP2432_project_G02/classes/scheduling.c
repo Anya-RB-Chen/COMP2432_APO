@@ -13,7 +13,7 @@ int** FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize) {
 
 SCHEDULING_ALGORITHM getSCHEDULING_ALGORITHM (int mode) {
     static const int SCHEDULING_ALGORITHM_COUNT = 2;
-    static const SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, ALL};
+    static const SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT,RR};
     return SCHEDULING_ALGORITHM_ARRAY[mode];
 }
 
@@ -27,8 +27,11 @@ char* get_SchedingAlgorithm_name (SCHEDULING_ALGORITHM algorithm) {
         case Priority:
             message = "Priority";
             break;
-        case ALL:
-            message = "All";
+        case SRT:
+            message = "SRT";
+            break;
+        case RR:
+            message = "RR";
             break;
         default:
             message = "";

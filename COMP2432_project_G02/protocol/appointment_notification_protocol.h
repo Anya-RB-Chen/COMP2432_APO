@@ -7,6 +7,8 @@
 
 #include "../classes/appointment.h"
 #include "../classes/scheduling.h"
+#include <stdlib.h>
+#include <string.h>
 
 
 
@@ -20,8 +22,8 @@ void  appointmentNotification_protocol_API_(SAppointment ap,  int wp); //deliver
 //SAppointment  appointmentNotification_protocol_childAPI(int rp);
 
 //level 2: presentation layer interface
-void  appointmentNotification_protocol_requestMessage_encoding(SAppointment ap, char* dst);
-
-SAppointment appointmentNotification_protocol_requestMessage_decoding(char *message);
+char *appointmentNotification_protocol_requestMessage_encoding(SAppointment ap);
+SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *message);
+char* Int2String(int num,char *str);
 
 #endif //COMP2432_PROJECT_G02_APPOINTMENT_NOTIFICATION_PROTOCOL_H
