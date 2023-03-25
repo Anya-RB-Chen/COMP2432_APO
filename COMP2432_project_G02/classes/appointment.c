@@ -35,3 +35,4 @@ char* get_AP_TYPE_name (AP_TYPE type) {
     strcpy(result, message);
     return result;
 }
+

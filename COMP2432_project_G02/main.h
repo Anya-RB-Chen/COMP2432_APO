@@ -11,27 +11,27 @@
 
 //global variable & constant
 
+//global variable definition
 //(0) DS
-const int DEFAULT_CAPACITY_OF_VECTOR;  //default capacity of vector in this program.
-// assumption: the size of vector will not exceed 128, and we do not need to invoke expand method.
-//----simplify the DS vector to array & write pointer.
+extern const int DEFAULT_CAPACITY_OF_VECTOR;  //default capacity of vector in this program.
 
 //（1）time
 STime g_startTime, g_endTime; //define valid time range
 
 //(2) name
-char** g_nameMap; //array to store the user name.
+char g_nameMap[10][50]; //array to store the user name.
 int g_userNum;
 //related function
 
 //(3) IPC
 int* g_p2c_fd; //pointer of pipe from parent to child
 int* g_c2p_fd; //pointer of pipe from child to parent;
-extern const int P2C_BUFFER_SIZE ;
-extern const int C2P_BUFFER_SIZE ;
+//const int P2C_BUFFER_SIZE = 800;
+//const int C2P_BUFFER_SIZE = 800;
 
 //(4) appointment
 int g_apNum;
-SAppointment *g_appointmentArray; //assumption: not exceed the capacity
+SAppointment g_appointmentArray[DEFAULT_CAPACITY_OF_VECTOR];  //assumption: not exceed the capacity
+//!security problem: visible to the user process
 
 #endif //COMP2432_PROJECT_G02_MAIN_H

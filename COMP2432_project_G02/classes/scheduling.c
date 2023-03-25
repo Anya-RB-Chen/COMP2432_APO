@@ -7,10 +7,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int** FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize) {
-    return NULL;
-}
-
 SCHEDULING_ALGORITHM getSCHEDULING_ALGORITHM (int mode) {
     static const int SCHEDULING_ALGORITHM_COUNT = 2;
     static const SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT,RR};

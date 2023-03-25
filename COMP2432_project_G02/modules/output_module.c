@@ -2,7 +2,6 @@
 // Created by 袁蕴宸 on 25/2/2023.
 //
 
-#include "output_module.h"
 
 
 #include "../classes/scheduling.h"
@@ -11,6 +10,10 @@
 
 //output module:
 
-void outputModule (int** scheduleMatrix, SCHEDULING_ALGORITHM algorithm) {
+//--------------------------------------------------------------------------------------------------------------------------
+//use another format of matrix specification. The meaning is unchanged.
+//need to maintain the sequence of output file.
+void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDULING_ALGORITHM algorithm) {
 
 }
+//--------------------------------------------------------------------------------------------------------------------------

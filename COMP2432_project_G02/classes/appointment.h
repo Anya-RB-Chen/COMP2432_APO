@@ -16,14 +16,13 @@ char* get_AP_TYPE_name (AP_TYPE type);
 
 typedef struct SAppointment {
     enum AP_TYPE type;
-    struct STime startTime, endTime;
+    STime startTime, endTime;
     float duration; //0.5
     int apIndex;
-    char caller[10];
-    char callee[10][10];
+    char caller[50];
+    char callee[10][50];
     int numberOfCallee;
 }  SAppointment;
-
 
 
 #endif //COMP2432_PROJECT_G02_APPOINTMENT_H

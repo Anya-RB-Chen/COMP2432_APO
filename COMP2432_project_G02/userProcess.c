@@ -13,8 +13,7 @@
 #include "classes/appointment.h"
 #include "protocol/coding_tools.h"
 #include "classes/scheduling.h"
-#include "protocol/appointment_notification_protocol.h"
-#include "protocol/schedule_requiring_protocol.h"
+#include "protocol/protocol.h"
 
 //child process:
 //------------------------------------------------------------------------------------------------------------------------//------------------------------------------------------------------------------------------------------------------------//--------------------------------------------------------------------------------------------------------------------------
@@ -25,81 +24,94 @@ static void closeUserConnection (int userIndex);
 //function hierarchy.
 //level 0:
 void userProcess(int userIndex) {
-//--------------------------------------------------------------------------------------------------------------------------
-    printf("(pid: %d)  Child process %d is created for %s\n",  getpid(),userIndex, g_nameMap[userIndex]);
-    sleep(1);
-    printf("(pid: %d)  Child process %d  terminated\n",  getpid(),userIndex);
-    exit(userIndex);
-//--------------------------------------------------------------------------------------------------------------------------
 
     //1, initialize
-    SAppointment * ap_array;
-    int arraySize = 0;
-    int p2c_read_pointer;
-    int c2p_write_Pointer;
 
     //(1) IPC pointer
     closeUserConnection(userIndex);
-    p2c_read_pointer = g_p2c_fd[2 * userIndex];
-    c2p_write_Pointer = g_c2p_fd[2 * userIndex + 1];
-    char *readBuffer = (char *) (malloc(sizeof(char) * P2C_BUFFER_SIZE));
-    char *writeBuffer = (char *) (malloc(sizeof(char) * C2P_BUFFER_SIZE));
+    int read_pointer = g_p2c_fd[2 * userIndex];
+    int write_Pointer = g_c2p_fd[2 * userIndex + 1];
 
     //(2) ds: appointment array.
-    ap_array = (SAppointment *) (malloc(sizeof(SAppointment) * DEFAULT_CAPACITY_OF_VECTOR));
+    SAppointment  ap_array[DEFAULT_CAPACITY_OF_VECTOR];
+    int arraySize = 0;
 
 
     //2,  interprocess communication.
+    char portNumbuffer[4];
     int terminate = 0;
-    int n;
-    while (terminate == 0) { //continue to read message until get terminated signal
-        //blocking
-        //(1) read the mode
-        if ((n = read(p2c_read_pointer, readBuffer, sizeof(int))) < 0) {
-            perror("read");
+    while (terminate == 0) {
+        //(1) read the portNum ------ need the message from parent include port number.
+        if (read(p2c_read_pointer, portNumbuffer, sizeof(int)) < 0) {
+            perror("userProcess: read port number.");
             exit(1);
         }
-        readBuffer[n] = 0;
 
-        int portNumber = integer_little_endian_decoding(readBuffer);
+        int portNum = integer_little_endian_decoding(portNumbuffer);
 
-        //branch of message mode: do the corresponding operation.
-        if (portNumber == 0) { //case1: get the terminating message
-            terminate = 1;
+        SAppointment newAp;
+        switch (portNum) {
+            case 0:
+                terminate = 1;
+                break;
 
-        } else {
-            // (2) get the message
-            //1' get message len
-            if ((n = read(p2c_read_pointer, readBuffer, sizeof(int))) < 0) {
-                perror("read");
-                exit(1);
-            }
-            readBuffer[n] = 0;
-            int messageLen = integer_little_endian_decoding(readBuffer);
-
-            //2' get the message
-            if ((n = read(p2c_read_pointer, readBuffer, sizeof(int) * messageLen)) < 0) {
-                perror("read");
-                exit(1);
-            }
-            readBuffer[n] = 0;
-
-            //3' corresponding operations
-            if (portNumber == 2) { //mode 2: appointment notification protocol: child process receive appointment information from parent.
-                SAppointment newAp = appointmentNotification_protocol_requestMessage_decoding(readBuffer);
+            case APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER: //appointment protocol
+                newAp = appointmentNotification_protocol_interpret_request(read_pointer);
+                //
                 ap_array[arraySize++] = newAp;
+                //
+                braek;
+                
+            case  SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER: //schedule protocol
+                SCHEDULING_ALGORITHM algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
+                //
+                //scheuduling service.
+                int (*personalScheduleMap)[2] = calloc(arraySize, sizeof *personalScheduleMap);
 
-            } else {// mode 3: schedule request protocol: APO query user's schedule based on particular algorithm.
-                scheduleRequering_protocol_serverAPI(readBuffer, c2p_write_Pointer, ap_array, arraySize);
-            }
+                switch (algorithm) {
+                    case FCFS:
+                        FCFS_schedule_algorithm (ap_array, arraySize, personalScheduleMap);
+                        break;
+                    case Priority:
+                        Priority_schedule_algorithm(ap_array,arraySize, personalScheduleMap);
+                        break;
+                    case SRT:
+                        SRT_schedule_algorithm(ap_array,arraySize, personalScheduleMap);
+                        break;
+
+                    default:
+                        printf("userProcess: unknown algorithm\n");
+                        exit(1);
+                }
+                //
+                scheduleRequering_protocol_deliverScheduleMap(personalScheduleMap, arraySize);
+                break;
+
+            default:
+                printf("Unknown port number %d\n", portNum);
+                exit(1);
         }
     }
 
-    //release recourse
 
+    //3, release recourse
+    close(read_pointer);
+    close(write_Pointer);
+    exit(1);
 }
 
 //
 static void closeUserConnection (int userIndex) {
-
+    int readPtrIndex = userIndex * 2;
+    int writePtrIndex = userIndex * 2 + 1;
+    int i;
+    for (i = 0; i < g_userNum * 2; ++i) {
+        if (i != readPtrIndex) {
+            close(g_p2c_fd[i]);
+        }
+        if (i != writePtrIndex) {
+            close (g_c2p_fd[i]);
+        }
+    }
 }
+

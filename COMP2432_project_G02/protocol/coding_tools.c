@@ -8,24 +8,30 @@
 
 #include "coding_tools.h"
 
+
+//integer coding
 void integer_little_endian_encoding (int num, char* dst) {
-    //clear
+    //clear the buffer
     int i;
     for (i = 0; i < 4; ++i) {
-        dst[i] &= 0x00;
+        dst[i] = 0;
     }
-    //write
-    for (i = 0; i < 4; ++i) {
-        dst[i] |= (num >> (sizeof(char) * i))/* & 0xff*/;
+    //extract & write
+    for (int i = 0; i < 4; ++i) {
+        //1' extract
+        int mask = (num >> (sizeof(char) * 8 * i)) & 0xff;
+        //2' write
+        dst[i] = (char) mask;
     }
-    dst[4] = 0;
 }
 
-int integer_little_endian_decoding(char* src) {
+int integer_little_endian_decoding(const char* src) {
     int res = 0;
     int i;
-    for (i = 0; i < 4; ++i) {
-        res |= (src[i] << (sizeof(char) * i));
+    for (i = 0; i< 4; ++i) {
+        int mask = (int) ((unsigned char) (src[i]));
+        mask <<= ( 8 * i);
+        res |= mask;
     }
     return res;
 }

@@ -13,6 +13,7 @@
 void userProcess(int userIndex);
 void appointmentModule (char* instruction);
 void scheduleModule(char* instruction);
+void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDULING_ALGORITHM algorithm);
 
 #endif //COMP2432_PROJECT_G02_MODULES_H
 

@@ -7,7 +7,7 @@
 
 #include "../classes/time_type.h"
 
-int integer_little_endian_decoding(char* src);
+int integer_little_endian_decoding(const char* src);
 void integer_little_endian_encoding (int num, char* dst);
 char* time_encoding (STime time);
 STime time_decoding (char* str);

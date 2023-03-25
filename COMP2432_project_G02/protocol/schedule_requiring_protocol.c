@@ -8,13 +8,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "schedule_requiring_protocol.h"
 #include "../classes/scheduling.h"
-#include "appointment_notification_protocol.h"
+#include "protocol.h"
 
 
 const int SCHHEDULE_REQUERING_PROTOCOL_REQUEST_MESSAGE_MAXIMUM_LENGTH = 800 ;
 const int SCHEDULE_REQUERING_PROTOCOL_RESPONSE_MESSAGE_MAXIMUM_LENGTH  = 800;
+
+const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 12345;
+
+void scheduleRequering_protocol_requestMessage_encoding(SCHEDULING_ALGORITHM algorithm, char* dst);
+
+SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *message);
+
+char*  scheduleRequering_protocol_responseMessage_encoding(int** personalScheduleArray, int scheduleNum);
+
+int**  scheduleRequering_protocol_responseMessage_decoding(char *message);
 
 
 //level 1: application layer API
@@ -37,33 +46,33 @@ int**  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, i
     return res;
 }
 
-//special one:
-void  scheduleRequering_protocol_serverAPI(char* requestMessage, int wp, SAppointment ap_array[], int arraySize) {
-    SCHEDULING_ALGORITHM algorithm = scheduleRequering_protocol_requestMessage_decoding(requestMessage);
-
-
-    int** personalSchedule;
-    switch (algorithm) {
-        case FCFS:
-            personalSchedule = FCFS_schedule_algorithm (ap_array,  arraySize);
-            break;
-        case Priority:
-            personalSchedule = Priority_schedule_algorithm(ap_array,arraySize);
-            break;
-        case SRT:
-            personalSchedule = SRT_schedule_algorithm(ap_array,arraySize);
-            break;
-        case RR:
-            personalSchedule = RR_schedule_algorithm(ap_array,arraySize);
-    }
-
-    char* message;
-    // encode personal schedule
-    message = scheduleRequering_protocol_responseMessage_encoding(personalSchedule,arraySize);
-
-    // write schdule back to pointer
-    write(wp,message,sizeof (message));
-}
+////special one:
+//void  scheduleRequering_protocol_serverAPI(char* requestMessage, int wp, SAppointment ap_array[], int arraySize) {
+//    SCHEDULING_ALGORITHM algorithm = scheduleRequering_protocol_requestMessage_decoding(requestMessage);
+//
+//
+//    int** personalSchedule;
+//    switch (algorithm) {
+//        case FCFS:
+//            personalSchedule = FCFS_schedule_algorithm (ap_array,  arraySize);
+//            break;
+//        case Priority:
+//            personalSchedule = Priority_schedule_algorithm(ap_array,arraySize);
+//            break;
+//        case SRT:
+//            personalSchedule = SRT_schedule_algorithm(ap_array,arraySize);
+//            break;
+//        case RR:
+//            personalSchedule = RR_schedule_algorithm(ap_array,arraySize);
+//    }
+//
+//    char* message;
+//    // encode personal schedule
+//    message = scheduleRequering_protocol_responseMessage_encoding(personalSchedule,arraySize);
+//
+//    // write schdule back to pointer
+//    write(wp,message,sizeof (message));
+//}
 
 
 //level 2: presentation layer interface

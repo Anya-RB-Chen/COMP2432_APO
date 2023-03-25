@@ -13,7 +13,10 @@ used to define buffer.
 const int APPOINTMENT_NOTIFICATION_PROTOCOL_REQUEST_MESSAGE_MAXIMUM_LENGTH = 800;
 
 
+
 //level 1: application layer API
+
+在message前面加上 port number 1。  用整数little endian编码。
 
 (1) API for appointment module of APO
 void  appointmentNotification_protocol_API_(struct SAppointment ap,  int wp);
