@@ -15,6 +15,9 @@
 #include "classes/scheduling.h"
 #include "protocol/protocol.h"
 
+const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 1;
+const int APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER = 2;
+
 //child process:
 //------------------------------------------------------------------------------------------------------------------------//------------------------------------------------------------------------------------------------------------------------//--------------------------------------------------------------------------------------------------------------------------
 
@@ -38,18 +41,19 @@ void userProcess(int userIndex) {
 
 
     //2,  interprocess communication.
-    char portNumbuffer[4];
+    char portNumbuffer[1];
     int terminate = 0;
     while (terminate == 0) {
         //(1) read the portNum ------ need the message from parent include port number.
-        if (read(p2c_read_pointer, portNumbuffer, sizeof(int)) < 0) {
+        if (read(read_pointer, portNumbuffer, 1) < 0) {
             perror("userProcess: read port number.");
             exit(1);
         }
 
-        int portNum = integer_little_endian_decoding(portNumbuffer);
+        int portNum = atoi(portNumbuffer);
 
         SAppointment newAp;
+        SCHEDULING_ALGORITHM algorithm;
         switch (portNum) {
             case 0:
                 terminate = 1;
@@ -60,10 +64,10 @@ void userProcess(int userIndex) {
                 //
                 ap_array[arraySize++] = newAp;
                 //
-                braek;
-                
-            case  SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER: //schedule protocol
-                SCHEDULING_ALGORITHM algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
+                break;
+
+            case SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER: //schedule protocol
+                algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
                 //
                 //scheuduling service.
                 int (*personalScheduleMap)[2] = calloc(arraySize, sizeof *personalScheduleMap);

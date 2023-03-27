@@ -1,8 +1,4 @@
-//
-// Created by 张文轩 on 2023/3/26.
-//
 #include "protocol.h"
-#include "appointment_notification_protocol.h"
 #include "coding_tools.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -10,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+const int APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER = 1;
 
 char* Int2String(int num,char *str)
 {
@@ -39,7 +36,6 @@ char *appointmentNotification_protocol_requestMessage_encoding(SAppointment ap) 
     char buffer[10];
     char *seperate = "|";
     char *sepCallee = "&";
-    char *none = "@";
     char *type = Int2String(ap.type,buffer);
     strcat(res,type);
     strcat(res,seperate);
@@ -94,7 +90,6 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
     j = 0;
     i++;
     a->startTime.year = atoi(year);
-    printf("%d\n",a->startTime.year);
 
     // get month
     char month[2];
@@ -173,9 +168,7 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
         i++;
         j++;
     }
-    printf("%s\n",caller);
     strcpy(a->caller,caller);
-    printf("%s\n",a->caller);
     j = 0;
     i++;
 
@@ -204,7 +197,6 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
         }
         i++;
         strcpy(a->callee[j],temp);
-        printf("%s\n",a->callee[j]);
         for (m = k-1; m<10; m++){
             temp[m] = '\0';
         }
@@ -216,27 +208,25 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
 }
 
 SAppointment appointmentNotification_protocol_interpret_request (int rp){
-    SAppointment appointment;
     int n;
     char buffer[100];
-    n = read(rp,buffer,100); // 不带port number，正常decode
+    n = read(rp,buffer,100);
     // this message doesn't contain port number. Decode by normal procedure
-    appointment = *appointmentNotification_protocol_requestMessage_decoding(buffer);
+    SAppointment appointment = *appointmentNotification_protocol_requestMessage_decoding(buffer);
     return appointment;
 }
+
 
 void  appointmentNotification_protocol_API_(SAppointment ap,  int wp) {
     // the appointment should be encoded with the port number
     // new format: |port_number|appointment_information
     char res[100];
-    char *seperate = "|";
+    int i;
+    for (i = 0; i<100; i++) res[i] = '\0';
     char* msg = appointmentNotification_protocol_requestMessage_encoding(ap);
-    char port_buffer[4];
-    integer_little_endian_encoding(APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER,port_buffer);
-    strcpy(res,port_buffer);
-    strcat(res,seperate);
+    strcat(res,"1");
     strcat(res,msg);
 
-    write(wp,msg,sizeof (msg));
+    write(wp,res, strlen(res));
 }
 

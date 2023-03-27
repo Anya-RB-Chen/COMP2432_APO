@@ -13,11 +13,10 @@
 #include "appointment_notification_protocol.c"
 #include "coding_tools.h"
 
-
 const int SCHHEDULE_REQUERING_PROTOCOL_REQUEST_MESSAGE_MAXIMUM_LENGTH = 800 ;
 const int SCHEDULE_REQUERING_PROTOCOL_RESPONSE_MESSAGE_MAXIMUM_LENGTH  = 800;
 
-const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 1234;
+const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 2;
 
 void scheduleRequering_protocol_requestMessage_encoding(SCHEDULING_ALGORITHM algorithm, char* dst);
 
@@ -69,6 +68,7 @@ SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *me
 }
 
 
+
 void scheduleRequering_protocol_deliverScheduleMap (int **scheduleMap, int scheduleNum, int wp){
     //schedule map encode完了之后把message写给parent，加上port number和length of schedule map
     int i, j;
@@ -76,9 +76,7 @@ void scheduleRequering_protocol_deliverScheduleMap (int **scheduleMap, int sched
     char *seperate = "|";
     char buffer[10];
     // add port number
-    char port_buffer[4];
-    integer_little_endian_encoding(APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER,port_buffer);
-    strcpy(encode,port_buffer);
+    strcpy(encode,"2");
     strcat(encode,seperate);
     // add schedule number(length of array)
     char *len = Int2String(scheduleNum,buffer);
@@ -94,10 +92,10 @@ void scheduleRequering_protocol_deliverScheduleMap (int **scheduleMap, int sched
             strcat(encode,seperate);
         }
     }
-
     // pass message to parent
-    write(wp,buffer, strlen(buffer));
+    write(wp,encode, strlen(encode));
 }
+
 
 int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int rp, int wp,int **schedule){
     // 先把algorithm写给child，等child传回来schedule信息之后decode，二维数组写给指针，长度作为返回值返回
@@ -107,16 +105,19 @@ int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int
     scheduleRequering_protocol_requestMessage_encoding(algorithm,scheduAlgo);
     write(wp,scheduAlgo,3);
 
+    // read port number
+    char port_buffer[1] = "\0";
+    int n = read(rp,port_buffer,1);
+    int port = atoi(port_buffer);
+
     // read the message passed by child;
-    char message[256];
-    int n;
+    char message[256] = "\0";
     n = read(rp,message,256);
 
     // decode the message passed by child
     // decode the number of schedules
     int i = 1, j, k = 0, m, scheduleNum;
-    char temp[5];
-    for (m = 0; m<5; m++) temp[m] = '\0';
+    char temp[5] = "\0";
     while (message[i] != '|'){
         temp[k] = message[i];
         i++;
@@ -130,8 +131,7 @@ int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int
     // write the schedule back to schedule
     // appointment index
     for (j = 0; j<scheduleNum; j++){
-        char temp[5];
-        for (m = 0; m<5; m++) temp[m] = '\0';
+        char temp[5] = "\0";
         while (message[i] != '|'){
             temp[k] = message[i];
             i++;
@@ -154,13 +154,3 @@ int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int
     // return the schedule number
     return scheduleNum;
 }
-
-
-
-
-
-
-
-
-
-
