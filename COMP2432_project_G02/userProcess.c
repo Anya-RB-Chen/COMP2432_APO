@@ -70,7 +70,9 @@ void userProcess(int userIndex) {
                 algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
                 //
                 //scheuduling service.
-                int (*personalScheduleMap)[2] = calloc(arraySize, sizeof *personalScheduleMap);
+                int **personalScheduleMap = (int**)malloc(sizeof (int**));
+                personalScheduleMap[0] = (int*) malloc(sizeof (int*)*50);
+                personalScheduleMap[1] = (int*) malloc(sizeof (int *)*50);
 
                 switch (algorithm) {
                     case FCFS:
@@ -88,7 +90,8 @@ void userProcess(int userIndex) {
                         exit(1);
                 }
                 //
-                scheduleRequering_protocol_deliverScheduleMap(personalScheduleMap, arraySize);
+                scheduleRequering_protocol_deliverScheduleMap(personalScheduleMap, arraySize,write_Pointer);
+                free(personalScheduleMap);
                 break;
 
             default:

@@ -66,7 +66,7 @@ int timeComparison (STime time1, STime time2);
 //output format: 2d array:  2 * arraySize
 //row 1: appointment index
 //row 2: accept 1 / reject 0
-void FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize, int (*schduleMap)[2] );
-void Priority_schedule_algorithm (SAppointment ap_array[],  int arraySize, int (*schduleMap)[2] );
-void SRT_schedule_algorithm (SAppointment ap_array[],  int arraySize, int (*schduleMap)[2] );
+void FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schduleMap );
+void Priority_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schduleMap );
+void SRT_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schduleMap );
 //--------------------------------------------------------------------------------------------------------------------------
