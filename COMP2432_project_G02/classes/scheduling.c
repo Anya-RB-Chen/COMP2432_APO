@@ -9,7 +9,7 @@
 
 SCHEDULING_ALGORITHM getSCHEDULING_ALGORITHM (int mode) {
     static const int SCHEDULING_ALGORITHM_COUNT = 2;
-    static const SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT,RR};
+    static const SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT};
     return SCHEDULING_ALGORITHM_ARRAY[mode];
 }
 
@@ -26,9 +26,6 @@ char* get_SchedingAlgorithm_name (SCHEDULING_ALGORITHM algorithm) {
         case SRT:
             message = "SRT";
             break;
-        case RR:
-            message = "RR";
-            break;
         default:
             message = "";
     }
@@ -37,3 +34,14 @@ char* get_SchedingAlgorithm_name (SCHEDULING_ALGORITHM algorithm) {
     return result;
 }
 
+void FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schduleMap){
+
+}
+
+void Priority_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schduleMap ){
+
+}
+
+void SRT_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schduleMap ){
+
+}

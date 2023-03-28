@@ -8,15 +8,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#include "userProcess.h"
 #include "main.h"
-#include "classes/appointment.h"
-#include "protocol/coding_tools.h"
-#include "classes/scheduling.h"
-#include "protocol/protocol.h"
 
-const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 1;
-const int APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER = 2;
+char g_nameMap[10][50]; //array to store the user name.
+int g_userNum;
+//related function
+
+//(3) IPC
+//int* g_p2c_fd; //pointer of pipe from parent to child
+//int* g_c2p_fd; //pointer of pipe from child to parent;
+//const int P2C_BUFFER_SIZE = 800;
+//const int C2P_BUFFER_SIZE = 800;
+
+//(4) appointment
+int g_apNum;
+//assumption: not exceed the capacity
+//!security problem: visible to the user process
+
+SAppointment g_appointmentArray[128];  //assumption: not exceed the capacity
+
 
 //child process:
 //------------------------------------------------------------------------------------------------------------------------//------------------------------------------------------------------------------------------------------------------------//--------------------------------------------------------------------------------------------------------------------------
@@ -31,19 +41,17 @@ void userProcess(int userIndex) {
     //1, initialize
 
     //(1) IPC pointer
-    closeUserConnection(userIndex);
     int read_pointer = g_p2c_fd[2 * userIndex];
     int write_Pointer = g_c2p_fd[2 * userIndex + 1];
 
     //(2) ds: appointment array.
-    SAppointment  ap_array[DEFAULT_CAPACITY_OF_VECTOR];
+    SAppointment  ap_array[128];
     int arraySize = 0;
 
-
     //2,  interprocess communication.
-    char portNumbuffer[1];
     int terminate = 0;
     while (terminate == 0) {
+        char portNumbuffer[1];
         //(1) read the portNum ------ need the message from parent include port number.
         if (read(read_pointer, portNumbuffer, 1) < 0) {
             perror("userProcess: read port number.");
@@ -51,6 +59,7 @@ void userProcess(int userIndex) {
         }
 
         int portNum = atoi(portNumbuffer);
+        printf("idx %d, read port number %d\n",userIndex,portNum);
 
         SAppointment newAp;
         SCHEDULING_ALGORITHM algorithm;
@@ -59,21 +68,23 @@ void userProcess(int userIndex) {
                 terminate = 1;
                 break;
 
-            case APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER: //appointment protocol
+            case 1: //appointment protocol
                 newAp = appointmentNotification_protocol_interpret_request(read_pointer);
                 //
                 ap_array[arraySize++] = newAp;
+                printf("%s\n",ap_array[arraySize-1].caller);
                 //
                 break;
 
-            case SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER: //schedule protocol
+            case 2: //schedule protocol
                 algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
                 //
                 //scheuduling service.
-                int **personalScheduleMap = (int**)malloc(sizeof (int**));
+                int **personalScheduleMap = (int**)malloc(sizeof (int**)*2);
                 personalScheduleMap[0] = (int*) malloc(sizeof (int*)*50);
                 personalScheduleMap[1] = (int*) malloc(sizeof (int *)*50);
 
+                // 为了测试comment掉
                 switch (algorithm) {
                     case FCFS:
                         FCFS_schedule_algorithm (ap_array, arraySize, personalScheduleMap);

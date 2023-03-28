@@ -5,14 +5,13 @@
 #ifndef COMP2432_APO_PROTOCOL_H
 #define COMP2432_APO_PROTOCOL_H
 
-#include "../classes/appointment.h"
-#include "../classes/scheduling.h"
-
+//#include "../classes/appointment.h"
+//#include "../classes/scheduling.h"
+//#include "../../G02_prototype/classes/appointment.h"
+#include "../main.h"
 
 //--------------------------------------------------------------------------------------------------------------------------
 //1, appointment Notification protocol
-
-extern const int APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER;
 
 void  appointmentNotification_protocol_API_(SAppointment ap,  int wp);
 
@@ -24,7 +23,6 @@ SAppointment appointmentNotification_protocol_interpret_request (int rp);
 
 
 //2, schudule requring protocol
-extern const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER;
 
 //server API
 //------------------------------------------------------------------------------------------------------------------------//--------------------------------------------------------------------------------------------------------------------------

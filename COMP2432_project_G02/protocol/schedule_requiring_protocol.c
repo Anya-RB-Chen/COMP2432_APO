@@ -8,15 +8,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../classes/scheduling.h"
+
 #include "protocol.h"
 #include "appointment_notification_protocol.c"
-#include "coding_tools.h"
 
 const int SCHHEDULE_REQUERING_PROTOCOL_REQUEST_MESSAGE_MAXIMUM_LENGTH = 800 ;
 const int SCHEDULE_REQUERING_PROTOCOL_RESPONSE_MESSAGE_MAXIMUM_LENGTH  = 800;
-
-const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 2;
 
 void scheduleRequering_protocol_requestMessage_encoding(SCHEDULING_ALGORITHM algorithm, char* dst);
 

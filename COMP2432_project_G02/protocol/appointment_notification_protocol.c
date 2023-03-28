@@ -1,4 +1,3 @@
-#include "protocol.h"
 #include "coding_tools.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -6,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-const int APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER = 1;
 
 char* Int2String(int num,char *str)
 {
@@ -32,7 +30,7 @@ char *appointmentNotification_protocol_requestMessage_encoding(SAppointment ap) 
     // Assumption: each field of appointment won't be null. If type is privateTime which only includes caller,
     // we have to assign callee a value. eg: "0";
     int i;
-    static char res[100] = "|";
+    char res[100] = "|";
     char buffer[10];
     char *seperate = "|";
     char *sepCallee = "&";
@@ -209,8 +207,8 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
 
 SAppointment appointmentNotification_protocol_interpret_request (int rp){
     int n;
-    char buffer[100];
-    n = read(rp,buffer,100);
+    char buffer[200];
+    n = read(rp,buffer,200);
     // this message doesn't contain port number. Decode by normal procedure
     SAppointment appointment = *appointmentNotification_protocol_requestMessage_decoding(buffer);
     return appointment;
@@ -220,10 +218,11 @@ SAppointment appointmentNotification_protocol_interpret_request (int rp){
 void  appointmentNotification_protocol_API_(SAppointment ap,  int wp) {
     // the appointment should be encoded with the port number
     // new format: |port_number|appointment_information
-    char res[100];
+    char res[200] = "\0";
     int i;
     for (i = 0; i<100; i++) res[i] = '\0';
-    char* msg = appointmentNotification_protocol_requestMessage_encoding(ap);
+
+    char*msg = appointmentNotification_protocol_requestMessage_encoding(ap);
     strcat(res,"1");
     strcat(res,msg);
 

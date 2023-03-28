@@ -8,6 +8,7 @@
 
 #include "../classes/scheduling.h"
 #include "../main.h"
+#include "stdlib.h"
 
 
 void userProcess(int userIndex);

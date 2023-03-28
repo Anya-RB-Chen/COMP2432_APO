@@ -1,3 +1,3 @@
-/Users/yuanyunchen/Documents/计算机/C/COMP2432_project_G02/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/yuanyunchen/Documents/计算机/C/COMP2432_project_G02/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/yuanyunchen/Documents/计算机/C/COMP2432_project_G02/cmake-build-debug/CMakeFiles/COMP2432_project_G02.dir
+/Users/zhangwenxuan/CLionProjects/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/zhangwenxuan/CLionProjects/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/zhangwenxuan/CLionProjects/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/CMakeFiles/COMP2432_project_G02.dir

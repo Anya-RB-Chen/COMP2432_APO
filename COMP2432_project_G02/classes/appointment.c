@@ -7,6 +7,8 @@
 
 #include "appointment.h"
 
+
+
 AP_TYPE getAP_TYPE (int mode) {
     static const AP_TYPE apTypeArray[] = {PrivateTime, ProjectMeeting, GroupStudy, Gathering};
     return apTypeArray[mode];
