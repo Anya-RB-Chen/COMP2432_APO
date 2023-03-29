@@ -30,7 +30,7 @@ int g_userNum;
 //const int C2P_BUFFER_SIZE = 800;
 
 //(4) appointment
-int g_apNum = 0;
+int g_apNum;
 
 //!security problem: visible to the user process
 
@@ -195,8 +195,6 @@ static void freeUpProgram() {
         //close pipe
         close(g_p2c_fd[2 * i + 1]);
         close(g_c2p_fd[2 * i]);
-//        close(g_p2c_fd[i][0]);
-//        close(g_c2p_fd[i][1]);
     }
 
     //(2) collect child process

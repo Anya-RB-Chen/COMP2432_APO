@@ -42,7 +42,7 @@ void appointmentModule (char* instruction) {
 //    appointment.type = ProjectMeeting;
 
     g_appointmentArray[g_apNum++] = appointment;  //! problem: apo save appointment information.
-
+    printf("current apNum %d\n",g_apNum);
 
    //2,  notify the users about the appointment
     // notify all the caller a& callee
@@ -70,42 +70,44 @@ void appointmentModule (char* instruction) {
 //input: Appointment type Instruction
 //output: translate it to SAppointment type.
 //        ( no need to initialize apIndex. If there is no caller, set the caller to empty string.)
-static SAppointment interpretAppointmentInstruction (char* instruction) {
+SAppointment interpretAppointmentInstruction (char* instruction) {
 
     SAppointment a;
     int len = strlen(instruction);
-
+    int i;
     //find the length of the type
     int count = 0;
-    for(int i =0; i < len; i ++){
+    for(i =0; i < len; i ++){
         if(instruction[i] == ' ') break;
         count++;
     }
 
     //copy and store
     char type[count+1];
-    for(int i = 0; i < count;i++){
+    for (i = 0; i<count+1; i++) type[i] = '\0';
+    for(i = 0; i < count;i++){
         type[i] = instruction[i];
     }
+    printf("type %s",type);
     int mode = getInstructionMode(type);
     a.type = getAP_TYPE(mode);
 
+
     //get the name of the caller
     count++;
-    for (int i = 0; i < len;i++){
+    for (i = 0; i < len;i++){
         if(instruction[count] == ' '){
             break;
         }
         a.caller[i] = instruction[count];
         count++; // move the pointer
     }
-    printf("%s\n",a.caller);
 
     //get two time
     char date[9], hour[5];
     count++;//the pointer for all storage
     //get the date
-    for(int i = 0; i < len; i++){
+    for(i = 0; i < len; i++){
         if(instruction[count] == ' '){
             break;
         }
@@ -115,7 +117,7 @@ static SAppointment interpretAppointmentInstruction (char* instruction) {
 
     //get the hour
     count++;
-    for(int i = 0; i < len; i++){
+    for(i = 0; i < len; i++){
         if(instruction[count] == ' '){
             break;
         }
@@ -129,7 +131,7 @@ static SAppointment interpretAppointmentInstruction (char* instruction) {
     count++;
     float duration;
     char duration_trans[3];
-    for(int i = 0; i < len; i++){
+    for(i = 0; i < len; i++){
         if(instruction[count] == ' '){
             break;
         }
@@ -187,6 +189,9 @@ static SAppointment interpretAppointmentInstruction (char* instruction) {
     }
     else a.numberOfCallee = num;
 
+    printf("caller %s, year %d, mon %d, duration %f, idx %d\n", a.caller,a.startTime.year, a.startTime.month,
+           a.duration, a.apIndex);
+
     return a;
 }
 
@@ -215,7 +220,6 @@ static int get_UserIndex_by_name (char* name) {
 //intput: empty string or valid name
 //output: -1           /     write pointer.
 static int get_p2cWritePointer_by_name (char* name) {
-
     int userIndex = get_UserIndex_by_name(name);
     if (userIndex == -1) {
         return -1;

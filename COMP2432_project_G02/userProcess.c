@@ -21,7 +21,7 @@ int g_userNum;
 //const int C2P_BUFFER_SIZE = 800;
 
 //(4) appointment
-int g_apNum;
+int g_apNum = 0;
 //assumption: not exceed the capacity
 //!security problem: visible to the user process
 
@@ -33,7 +33,7 @@ SAppointment g_appointmentArray[128];  //assumption: not exceed the capacity
 
 //static global function
 static void closeUserConnection (int userIndex);
-
+void test(SAppointment ap[],int); // only for testing
 //function hierarchy.
 //level 0:
 void userProcess(int userIndex) {
@@ -59,7 +59,7 @@ void userProcess(int userIndex) {
         }
 
         int portNum = atoi(portNumbuffer);
-        printf("idx %d, read port number %d\n",userIndex,portNum);
+        printf("idx %d pid %d, read port number %d\n",userIndex,getpid(),portNum);
 
         SAppointment newAp;
         SCHEDULING_ALGORITHM algorithm;
@@ -72,11 +72,13 @@ void userProcess(int userIndex) {
                 newAp = appointmentNotification_protocol_interpret_request(read_pointer);
                 //
                 ap_array[arraySize++] = newAp;
-                printf("%s\n",ap_array[arraySize-1].caller);
+
+
                 //
                 break;
 
             case 2: //schedule protocol
+                test(ap_array,arraySize);
                 algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
                 //
                 //scheuduling service.
@@ -84,6 +86,8 @@ void userProcess(int userIndex) {
                 personalScheduleMap[0] = (int*) malloc(sizeof (int*)*50);
                 personalScheduleMap[1] = (int*) malloc(sizeof (int *)*50);
 
+
+             //   test(ap_array,arraySize);
                 // 为了测试comment掉
                 switch (algorithm) {
                     case FCFS:
@@ -101,6 +105,7 @@ void userProcess(int userIndex) {
                         exit(1);
                 }
                 //
+
                 scheduleRequering_protocol_deliverScheduleMap(personalScheduleMap, arraySize,write_Pointer);
                 free(personalScheduleMap);
                 break;
@@ -113,8 +118,9 @@ void userProcess(int userIndex) {
 
 
     //3, release recourse
-    close(read_pointer);
-    close(write_Pointer);
+//    close(read_pointer);
+//    close(write_Pointer);
+    closeUserConnection(userIndex);
     exit(1);
 }
 
@@ -130,6 +136,16 @@ static void closeUserConnection (int userIndex) {
         if (i != writePtrIndex) {
             close (g_c2p_fd[i]);
         }
+    }
+}
+
+
+void test(SAppointment ap[],int size){
+    int i;
+    printf("array size %d\n",size);
+    for (i = 0; i<size; i++){
+        printf("caller %s, year %d, mon %d, duration %f, idx %d\n", ap[i].caller,ap[i].startTime.year, ap[i].startTime.month,
+               ap[i].duration, ap[i].apIndex);
     }
 }
 

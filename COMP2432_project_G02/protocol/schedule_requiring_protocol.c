@@ -24,9 +24,10 @@ SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *me
 //server: child process / user
 
 SCHEDULING_ALGORITHM scheduleRequering_protocol_interpret_request (int rp){
-    char buffer[10];
+    char buffer[4];
     int n;
     n = read(rp,buffer,10);
+    printf("read %s\n",buffer);
     if (strcmp(buffer,"FCF") == 0) {
         return FCFS;
     } else if (strcmp(buffer,"PRI") == 0){
@@ -69,12 +70,12 @@ SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *me
 void scheduleRequering_protocol_deliverScheduleMap (int **scheduleMap, int scheduleNum, int wp){
     //schedule map encode完了之后把message写给parent，加上port number和length of schedule map
     int i, j;
-    static char encode[256];
+    char encode[256] = "|";
     char *seperate = "|";
     char buffer[10];
-    // add port number
-    strcpy(encode,"2");
-    strcat(encode,seperate);
+//    // add port number
+//    strcpy(encode,"2");
+ //   strcat(encode,seperate);
     // add schedule number(length of array)
     char *len = Int2String(scheduleNum,buffer);
     strcat(encode,len);
@@ -103,13 +104,15 @@ int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int
     write(wp,scheduAlgo,3);
 
     // read port number
-    char port_buffer[1] = "\0";
-    int n = read(rp,port_buffer,1);
-    int port = atoi(port_buffer);
-
+//    char port_buffer[1];
+//    int n = read(rp,port_buffer,1);
+//    int port = atoi(port_buffer);
+//    printf("pid %d, recipient read port %s\n",getpid(),port_buffer);
+    int n;
     // read the message passed by child;
     char message[256] = "\0";
     n = read(rp,message,256);
+    printf("pid %d, recipient read message %s\n",getpid(),message);
 
     // decode the message passed by child
     // decode the number of schedules
