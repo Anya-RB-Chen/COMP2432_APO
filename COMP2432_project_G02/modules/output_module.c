@@ -25,6 +25,19 @@ void printAllAlgorithm() {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------
+
+// Count the time duration of all appointments of one user
+float countTimeDuration(int size, int scheduleMatrix[][size], int appointmentArray[size]) {
+    float count = 0;
+    for (int j = 0; j < size; j++) {
+        if (appointmentArray[j] == 1) {
+            count += g_appointmentArray[j].duration;
+        }
+    }
+    return count;
+}
+
+// Check whether the appointment has been received by all users
 int checkReceive(int size, int scheduleMatrix[][size], int appointmentIndex) {
     for (int i = 0; i < g_userNum; i++) {
         if (scheduleMatrix[i][appointmentIndex] == 0) {
@@ -34,7 +47,18 @@ int checkReceive(int size, int scheduleMatrix[][size], int appointmentIndex) {
     return 1;
 }
 
-// Count the number of appointments that have been received by one user
+// Count the time duration of accepted appointments of one user
+float countAcceptedTimeDuration(int size, int scheduleMatrix[][size], int appointmentArray[size]) {
+    float count = 0;
+    for (int j = 0; j < size; j++) {
+        if (appointmentArray[j] == 1 && checkReceive(size, scheduleMatrix, j) == 1) {
+            count += g_appointmentArray[j].duration;
+        }
+    }
+    return count;
+}
+
+// Count the number of appointments of one user that have been received by all users
 int numberOfAppointment(int size, int scheduleMatrix[][size], int appointmentArray[size]) {
     int count = 0;
     for (int j = 0; j < size; j++) {
@@ -45,6 +69,8 @@ int numberOfAppointment(int size, int scheduleMatrix[][size], int appointmentArr
     return count;
 }
 
+
+// Count the overall appointments that have been received by all users
 int numberOfReceivedAppointment(int size, int scheduleMatrix[][size], SAppointment receivedAppointmentArray[size]) {
     int count = 0;
     for (int j = 0; j < size; j++) {
@@ -59,6 +85,7 @@ int numberOfReceivedAppointment(int size, int scheduleMatrix[][size], SAppointme
     return count;
 }
 
+// Count the overall appointments that have been rejected by all users
 int numberOfRejectedAppointment(int size, int scheduleMatrix[][size], SAppointment rejectedAppointmentArray[size]) {
     int count = 0;
     for (int j = 0; j < size; j++) {
@@ -189,7 +216,10 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
     // Utilization of Time Slot
     fprintf(f, "Utilization of Time Slot:\n\n");
     for (int i = 0; i < rows; i++) {
-        fprintf(f, "\t%s \t\t\t %f\n", nameMap[i], 0.000000);
+        float timeDuration = countTimeDuration(columns, scheduleMatrix, scheduleMatrix[i]);
+        float acceptedDuration = countAcceptedTimeDuration(columns, scheduleMatrix, scheduleMatrix[i]);
+        float utilization = acceptedDuration / timeDuration;
+        fprintf(f, "\t%s \t\t\t %f\n", nameMap[i], utilization);
     }
 
     fprintf(f, "\n\n\n");
