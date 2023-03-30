@@ -1,9 +1,9 @@
 //
 // Created by 袁蕴宸 on 21/2/2023.
 //
-#include "../classes/scheduling.h"
-#include "../main.h"
-#include "../protocol/protocol.h"
+//#include "../classes/scheduling.h"
+//#include "../main.h"
+
 #include "modules.h"
 #include <stdio.h>
 
@@ -12,7 +12,7 @@ static SCHEDULING_ALGORITHM interpretScheduleInstruction (char* instruction);
 static void analyseSchedule (SCHEDULING_ALGORITHM algorithm);
 static int rescheduling( int (*scheduleMatrix)[g_apNum],SAppointment* rescheduledAppointments);
 
-const SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT};
+SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT};
 
 //input: instruction
 //output: go to txt file.
