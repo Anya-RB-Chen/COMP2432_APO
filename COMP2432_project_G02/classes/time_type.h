@@ -32,6 +32,7 @@ STime getTimeFromStandardForm (char* str);
 int timeComparison (STime time1, STime time2);
 //--------------------------------------------------------------------------------------------------------------------------
 
+char* timeToString(STime time);
 
 #endif //COMP2432_PROJECT_G02_TIME_TYPE_H
 

@@ -7,10 +7,11 @@
 #include <string.h>
 #include <math.h>
 
-#include "../main.h"                //include the main function
-#include "../classes/scheduling.c" 
-#include "../classes/appointment.c"
-#include "../classes/time_type.c"             
+// #include "../main.h"                //include the main function
+// #include "../classes/scheduling.c" 
+// #include "../classes/appointment.c"
+// #include "../classes/time_type.c"
+#include "modules.h"         
 
 
 //output module:
@@ -20,20 +21,28 @@
 //need to maintain the sequence of output file.
 void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDULING_ALGORITHM algorithm) {
 
+    //-------------------------------------------------------
     // print the time period
     if ( !g_startTime.day || !g_endTime.day) {
         g_startTime = getTime("230401", "0000");
         g_endTime = getTime("230430", "2359");
         // printf("No time period\n");
     }
-    printf("Period %s to %s\n", timeToString(g_startTime), timeToString(g_endTime));
+    char* t1 = timeToString(g_startTime)+1;
+    char* t2 = timeToString(g_endTime)+1;
+    printf("\n***********************************************************************\n");
+    printf("Period %s to %s\n", t1, t2);
 
+    //-------------------------------------------------------
     // print the schedule type
     char* schedule_name = get_SchedingAlgorithm_name(algorithm);
     if (strcmp(schedule_name, "") == 0) {strcpy(schedule_name, "ALL");}
     printf("Algorithm used: %s\n", schedule_name);
 
-    printf("\n***Appointment Schedule***\n");
+    //-------------------------------------------------------
+    // print the Appointment Schedule of every user
+    printf("\n***Appointment Schedule***\n\n");
+
 }
 //--------------------------------------------------------------------------------------------------------------------------
 

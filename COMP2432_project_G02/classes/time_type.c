@@ -107,6 +107,8 @@ int timeComparison (STime time1, STime time2){
 }
 
 char* timeToString(STime time){
+    // Used for the first line in output module
+
     char* str = (char*)malloc(sizeof(char)*20);
     char year_c[5], month_c[3], day_c[3], hour_c[3], min_c[3];
     sprintf(year_c, "%d", time.year);
@@ -114,7 +116,7 @@ char* timeToString(STime time){
     sprintf(day_c, "%d", time.day);
     sprintf(hour_c, "%d", time.hour);
     sprintf(min_c, "%d", time.minute);
-    printf("year: %s, month: %s, day: %s, hour: %s, min: %s\n", year_c, month_c, day_c, hour_c, min_c);
+    // printf("year: %s, month: %s, day: %s, hour: %s, min: %s\n", year_c, month_c, day_c, hour_c, min_c);
     strcat(str, "20");
     strcat(str, year_c);
     strcat(str, "-");
