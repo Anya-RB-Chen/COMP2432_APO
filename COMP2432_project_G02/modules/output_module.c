@@ -228,29 +228,3 @@ void printMatrix(int rows, int columns, int scheduleMatrix[][columns]) {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------
-
-// Only for test usage
-void test_output() {
-    g_userNum = 4;
-    g_apNum = 3;
-    int scheduleMatrix[4][3] = {{-1, 1, 0}, {1, 0, 0}, {1, -1, -1}, {0, 1, 1}};
-
-    //     SAppointment appointment;
-    // appointment.startTime.year = 2023;
-    // appointment.startTime.month = 4;
-    // appointment.startTime.day = 2;
-    // appointment.startTime.hour = 19;
-    // appointment.startTime.minute = 0;
-    // appointment.duration = 2.0f;
-    // strcpy(appointment.caller,"john");
-    // strcpy(appointment.callee[0],"paul");
-    // strcpy(appointment.callee[1],"mary");
-    // appointment.numberOfCallee = 2;
-    // appointment.apIndex = 1;
-    // appointment.type = ProjectMeeting;
-
-    // Comment out the following line to test the scheduleMatrix
-    printMatrix(g_userNum, g_apNum, scheduleMatrix);
-
-    outputModule(g_userNum, g_apNum, scheduleMatrix, FCFS);
-}
