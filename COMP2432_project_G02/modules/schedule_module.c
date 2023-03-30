@@ -69,7 +69,7 @@ static SCHEDULING_ALGORITHM interpretScheduleInstruction (char* instruction) {
 
 static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
     //(1) initialize
- //   int (*scheduleMatrix)[g_apNum] = calloc(g_userNum, sizeof *scheduleMatrix) ;
+    int (*scheduleMatrix)[g_apNum] = calloc(g_userNum, sizeof *scheduleMatrix) ;
     //( 2) get the personal schedule
     int userIndex, rp, wp;
     int **personalSchedule = (int**)malloc(sizeof (int**)*2);
@@ -81,7 +81,6 @@ static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
         rp = g_c2p_fd[2*userIndex];
         wp = g_p2c_fd[2*userIndex + 1];
 
-
         // 新加的，因为之前没有语句写port number
         write(wp,"2",1);
 
@@ -89,25 +88,22 @@ static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
         //save to schedule matrix
         int apIndex, i,reply;
         for (apIndex = 0; apIndex < g_apNum; ++apIndex) { //record not include meeting
-//            scheduleMatrix[userIndex][apIndex] = -1;
+            scheduleMatrix[userIndex][apIndex] = -1;
         }
-//        for ( i =0; i < numberOfSchedule; ++i) {
-//            apIndex = personalSchedule[i][0];
-//            reply = personalSchedule[i][1];
-//            scheduleMatrix[userIndex][apIndex] = reply;
-//        }
+        for ( i =0; i < numberOfSchedule; ++i) {
+            apIndex = personalSchedule[i][0];
+            reply = personalSchedule[i][1];
+            scheduleMatrix[userIndex][apIndex] = reply;
+        }
     }
-//
-//    //(3) rescheduling
-//
-//
+
 //    //(4) output:
-//    outputModule(g_userNum, g_apNum, scheduleMatrix,algorithm);
+    outputModule(g_userNum, g_apNum, scheduleMatrix,algorithm);
 //
 
     //(5) free up
     free(personalSchedule);
- //   free (scheduleMatrix);
+    free (scheduleMatrix);
 }
 
 

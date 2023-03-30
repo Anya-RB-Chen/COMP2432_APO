@@ -336,4 +336,3 @@ static int fitHole (int startTimeIndex, int duration, const int participantArray
     return 1;
 }
 
-
