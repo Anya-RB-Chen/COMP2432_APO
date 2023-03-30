@@ -26,23 +26,7 @@ void appointmentModule (char* instruction) {
     SAppointment appointment = interpretAppointmentInstruction(instruction);
     appointment.apIndex = g_apNum;
 
-//// only for testing, 最后删掉
-//    SAppointment appointment;
-//    appointment.startTime.year = 2023;
-//    appointment.startTime.month = 4;
-//    appointment.startTime.day = 2;
-//    appointment.startTime.hour = 19;
-//    appointment.startTime.minute = 0;
-//    appointment.duration = 2.0f;
-//    strcpy(appointment.caller,"john");
-//    strcpy(appointment.callee[0],"paul");
-//    strcpy(appointment.callee[1],"mary");
-//    appointment.numberOfCallee = 2;
-//    appointment.apIndex = 1;
-//    appointment.type = ProjectMeeting;
-
     g_appointmentArray[g_apNum++] = appointment;  //! problem: apo save appointment information.
-//    printf("current apNum %d\n",g_apNum);
 
    //2,  notify the users about the appointment
     // notify all the caller a& callee
@@ -94,6 +78,7 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
 
     //get the name of the caller
     count++;
+    for (i = 0; i<50; i++) a.caller[i] = '\0';
     for (i = 0; i < len;i++){
         if(instruction[count] == ' '){
             break;
@@ -101,6 +86,7 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
         a.caller[i] = instruction[count];
         count++; // move the pointer
     }
+
 
     //get two time
     char date[9], hour[5];
