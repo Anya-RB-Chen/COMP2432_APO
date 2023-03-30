@@ -21,6 +21,7 @@
 // Global variables
 int g_fileNum = 0;
 char* nameToString(char name[50]);
+int rescheduleALgorithm(int appointmentMap[],  SAppointment*  rescheduledAppointmentArray);
 //--------------------------------------------------------------------------------------------------------------------------
 void printAllAlgorithm(int scheduleMatrix[][g_apNum]) 
 {
