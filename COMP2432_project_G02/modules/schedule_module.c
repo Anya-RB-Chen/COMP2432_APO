@@ -88,17 +88,19 @@ static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
         numberOfSchedule = scheduleRequering_protocol_recipientAPI(algorithm, rp, wp, personalSchedule );  // the format of personalSchedule !
         //save to schedule matrix
         int apIndex, i,reply;
+
         for (apIndex = 0; apIndex < g_apNum; ++apIndex) { //record not include meeting
             scheduleMatrix[userIndex][apIndex] = -1;
         }
+
         for ( i =0; i < numberOfSchedule; ++i) {
-            apIndex = personalSchedule[i][0];
-            reply = personalSchedule[i][1];
+
+            apIndex = personalSchedule[0][i];
+            reply = personalSchedule[1][i];
             scheduleMatrix[userIndex][apIndex] = reply;
         }
-    }
 
-    //(3) rescheduling
+    }
 
 
     //(4) output:

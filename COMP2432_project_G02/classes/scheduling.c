@@ -36,15 +36,12 @@ char* get_SchedingAlgorithm_name (SCHEDULING_ALGORITHM algorithm) {
 
 
 int ifOverLap(SAppointment ap1, SAppointment ap2){ // return 1 if overlap
+    if (ap1.startTime.day != ap2.startTime.day) return 0;
     if (ap1.apIndex != ap2.apIndex){
-        if (timeComparison(ap1.startTime,ap2.startTime) == 1 &&
-            timeComparison(ap2.startTime,ap1.endTime) == 1)
-            return 1;
-        if (timeComparison(ap2.startTime,ap1.startTime) == 1 &&
-            timeComparison(ap1.startTime,ap2.endTime) == 1)
-            return 1;
+           if (ap1.endTime.hour <= ap2.startTime.hour || ap2.endTime.hour<=ap1.startTime.hour)
+               return 0;
     }
-    return 0;
+    return 1;
 }
 
 void sort_by_startTime(SAppointment appointment[], int size){
@@ -62,8 +59,9 @@ void sort_by_startTime(SAppointment appointment[], int size){
 
 // 按start time(arrival time)排序，若有overlap则reject后来者
 void FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schduleMap){
+
     sort_by_startTime(ap_array,arraySize);
-    int i = 1, current = 1;
+    int current = 0, i = 1;
     schduleMap[0][0] = ap_array[0].apIndex;
     schduleMap[1][0] = 1;
     while (i<arraySize){
@@ -74,10 +72,10 @@ void FCFS_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **sch
         } else{ // no overlap
             schduleMap[0][i] = ap_array[i].apIndex;
             schduleMap[1][i] = 1;
-            i++;
-            current++;
+            current = i++;
         }
     }
+
 }
 
 // 按start time(arrive time)排序，若有overlap, 则执行priority大的
@@ -102,8 +100,7 @@ void Priority_schedule_algorithm (SAppointment ap_array[],  int arraySize, int *
         } else{
             schduleMap[0][i] = ap_array[i].apIndex;
             schduleMap[1][i] = 1;
-            i++;
-            current++;
+            current = i++;
         }
     }
 }
@@ -129,8 +126,7 @@ void SRT_schedule_algorithm (SAppointment ap_array[],  int arraySize, int **schd
         } else{
             schduleMap[0][i] = ap_array[i].apIndex;
             schduleMap[1][i] = 1;
-            i++;
-            current++;
+            current = i++;
         }
     }
 }

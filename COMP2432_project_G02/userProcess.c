@@ -57,7 +57,7 @@ void userProcess(int userIndex) {
         }
 
         int portNum = atoi(portNumbuffer);
-        printf("idx %d pid %d, read port number %d\n",userIndex,getpid(),portNum);
+//        printf("idx %d pid %d, read port number %d\n",userIndex,getpid(),portNum);
 
         SAppointment newAp;
         SCHEDULING_ALGORITHM algorithm;
@@ -76,20 +76,26 @@ void userProcess(int userIndex) {
                 break;
 
             case 2: //schedule protocol
-                test(g_appointmentArray,arraySize);
+
+            //------------------------------------------------------------------------------------------------------------
+
+//                test(g_appointmentArray,arraySize);
                 algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
                 //
                 //scheuduling service.
                 int **personalScheduleMap = (int**)malloc(sizeof (int**)*2);
-                personalScheduleMap[0] = (int*) malloc(sizeof (int*)*50);
-                personalScheduleMap[1] = (int*) malloc(sizeof (int *)*50);
+                int i;
+                personalScheduleMap[0] = (int*) malloc(sizeof (int*)*DEFAULT_CAPACITY_OF_VECTOR);
+                personalScheduleMap[1] = (int*) malloc(sizeof (int *)*DEFAULT_CAPACITY_OF_VECTOR);
 
 
-             //   test(ap_array,arraySize);
+//                test(g_appointmentArray,arraySize);
+
                 // 为了测试comment掉
                 switch (algorithm) {
                     case FCFS:
                         FCFS_schedule_algorithm (g_appointmentArray, arraySize, personalScheduleMap);
+                        //------------------------------------------------------------------------------------------------------------
                         break;
                     case Priority:
                         Priority_schedule_algorithm(g_appointmentArray,arraySize, personalScheduleMap);
@@ -102,7 +108,16 @@ void userProcess(int userIndex) {
                         printf("userProcess: unknown algorithm\n");
                         exit(1);
                 }
-                //
+
+//                printf("User %d\n", userIndex);
+//                int row, col;
+//                for (row = 0; row < 2; ++row) {
+//                    for (col = 0; col < arraySize; ++col) {
+//                        printf("%d  ",personalScheduleMap[row][col]);
+//                    }
+//                    printf("\n");
+//                }
+//                printf("\n");
 
                 scheduleRequering_protocol_deliverScheduleMap(personalScheduleMap, arraySize,write_Pointer);
                 free(personalScheduleMap);

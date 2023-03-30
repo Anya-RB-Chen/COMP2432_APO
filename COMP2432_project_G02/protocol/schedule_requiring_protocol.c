@@ -26,7 +26,8 @@ SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *me
 SCHEDULING_ALGORITHM scheduleRequering_protocol_interpret_request (int rp){
     char buffer[4];
     int n;
-    n = read(rp,buffer,10);
+    n = read(rp,buffer,3);
+//    printf("%c%c%c\n", buffer[0], buffer[1], buffer[2]);
     if (strcmp(buffer,"FCF") == 0) {
         return FCFS;
     } else if (strcmp(buffer,"PRI") == 0){
@@ -91,10 +92,14 @@ void scheduleRequering_protocol_deliverScheduleMap (int **scheduleMap, int sched
     }
     // pass message to parent
     write(wp,encode, strlen(encode));
+
 }
 
 
 int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int rp, int wp,int **schedule){
+
+
+
     // 先把algorithm写给child，等child传回来schedule信息之后decode，二维数组写给指针，长度作为返回值返回
     // 保证上层函数能访问到数组长度（schedule的数量）
     // write schedule algotithm to child
