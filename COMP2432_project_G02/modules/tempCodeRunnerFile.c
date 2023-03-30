@@ -1,0 +1,13 @@
+    // SAppointment appointment;
+    // appointment.startTime.year = 2023;
+    // appointment.startTime.month = 4;
+    // appointment.startTime.day = 2;
+    // appointment.startTime.hour = 19;
+    // appointment.startTime.minute = 0;
+    // appointment.duration = 2.0f;
+    // strcpy(appointment.caller,"john");
+    // strcpy(appointment.callee[0],"paul");
+    // strcpy(appointment.callee[1],"mary");
+    // appointment.numberOfCallee = 2;
+    // appointment.apIndex = 1;
+    // appointment.type = ProjectMeeting;

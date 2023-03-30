@@ -8,71 +8,35 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../classes/scheduling.h"
-#include "protocol.h"
 
+#include "protocol.h"
+#include "appointment_notification_protocol.c"
 
 const int SCHHEDULE_REQUERING_PROTOCOL_REQUEST_MESSAGE_MAXIMUM_LENGTH = 800 ;
 const int SCHEDULE_REQUERING_PROTOCOL_RESPONSE_MESSAGE_MAXIMUM_LENGTH  = 800;
-
-const int SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 12345;
 
 void scheduleRequering_protocol_requestMessage_encoding(SCHEDULING_ALGORITHM algorithm, char* dst);
 
 SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *message);
 
-char*  scheduleRequering_protocol_responseMessage_encoding(int** personalScheduleArray, int scheduleNum);
-
-int**  scheduleRequering_protocol_responseMessage_decoding(char *message);
-
-
 //level 1: application layer API
 //recipient:  parent process / APO
 //server: child process / user
-int**  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int rp, int wp) {
-    // write request message to the child
-    char request[4];
-    scheduleRequering_protocol_requestMessage_encoding(algorithm,request);
-    write(wp,request,3);
 
-    // read response, decoding and return
-    int n,i,j;
-    char message[648];
-    n = read(rp, message, 648);
-    int **res = (int **)malloc(2 * sizeof(int *));
-
-    res = scheduleRequering_protocol_responseMessage_decoding(message);
-
-    return res;
+SCHEDULING_ALGORITHM scheduleRequering_protocol_interpret_request (int rp){
+    char buffer[4];
+    int n;
+    n = read(rp,buffer,10);
+    if (strcmp(buffer,"FCF") == 0) {
+        return FCFS;
+    } else if (strcmp(buffer,"PRI") == 0){
+        return Priority;
+    } else if (strcmp(buffer,"SRT") == 0){
+        return SRT;
+    }
+    return ALL;
 }
 
-////special one:
-//void  scheduleRequering_protocol_serverAPI(char* requestMessage, int wp, SAppointment ap_array[], int arraySize) {
-//    SCHEDULING_ALGORITHM algorithm = scheduleRequering_protocol_requestMessage_decoding(requestMessage);
-//
-//
-//    int** personalSchedule;
-//    switch (algorithm) {
-//        case FCFS:
-//            personalSchedule = FCFS_schedule_algorithm (ap_array,  arraySize);
-//            break;
-//        case Priority:
-//            personalSchedule = Priority_schedule_algorithm(ap_array,arraySize);
-//            break;
-//        case SRT:
-//            personalSchedule = SRT_schedule_algorithm(ap_array,arraySize);
-//            break;
-//        case RR:
-//            personalSchedule = RR_schedule_algorithm(ap_array,arraySize);
-//    }
-//
-//    char* message;
-//    // encode personal schedule
-//    message = scheduleRequering_protocol_responseMessage_encoding(personalSchedule,arraySize);
-//
-//    // write schdule back to pointer
-//    write(wp,message,sizeof (message));
-//}
 
 
 //level 2: presentation layer interface
@@ -83,8 +47,8 @@ void  scheduleRequering_protocol_requestMessage_encoding(SCHEDULING_ALGORITHM al
         strcpy(dst,"PRI");
     } else if (algorithm == SRT){
         strcpy(dst,"SRT");
-    } else if (algorithm == RR){
-        strcpy(dst,"RRR");
+    } else if (algorithm == ALL){
+        strcpy(dst,"ALL");
     }
 }
 
@@ -96,44 +60,76 @@ SCHEDULING_ALGORITHM scheduleRequering_protocol_requestMessage_decoding(char *me
         return Priority;
     } else if (strcmp(message,"SRT") == 0){
         return SRT;
-    } else if (strcmp(message,"RRR") == 0){
-        return RR;
     }
-    return 0;
+    return ALL;
 }
 
 
 
-char*  scheduleRequering_protocol_responseMessage_encoding(int** personalScheduleArray, int scheduleNum) {
-    // encode message: scheduleNum|xxx|xxx|
+void scheduleRequering_protocol_deliverScheduleMap (int **scheduleMap, int scheduleNum, int wp){
+    //schedule map encode完了之后把message写给parent，加上port number和length of schedule map
     int i, j;
-    static char encode[256];
+    char encode[256] = "|";
     char *seperate = "|";
     char buffer[10];
-    encode[0] = (char)( scheduleNum+48);
-    encode[1] = '|';
+//    // add port number
+//    strcpy(encode,"2");
+ //   strcat(encode,seperate);
+    // add schedule number(length of array)
+    char *len = Int2String(scheduleNum,buffer);
+    strcat(encode,len);
+    strcat(encode,seperate);
+
+    // encode the personal schedule
+    // encode format: port_number|num_of_schedule|schedule i|acceptance i
     for (i = 0; i<2; i++) {
         for (j = 0; j < scheduleNum; j++){
-            char *temp = Int2String(personalScheduleArray[i][j],buffer);
+            char *temp = Int2String(scheduleMap[i][j],buffer);
             strcat(encode,temp);
             strcat(encode,seperate);
         }
     }
-    return encode;
+    // pass message to parent
+    write(wp,encode, strlen(encode));
 }
 
 
-int**  scheduleRequering_protocol_responseMessage_decoding(char *message) {
-    int scheduleNum = message[0] - 48;
-    int **schedule = (int **)malloc(2 * sizeof(int *));
-    //int schedule[256][256];
-    int i = 2, j, k = 0, m;
-    for (m=0; m<scheduleNum; m++)
-        schedule[m] = (int *)malloc(scheduleNum * sizeof(int));
+int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int rp, int wp,int **schedule){
+    // 先把algorithm写给child，等child传回来schedule信息之后decode，二维数组写给指针，长度作为返回值返回
+    // 保证上层函数能访问到数组长度（schedule的数量）
+    // write schedule algotithm to child
+    char scheduAlgo[4];
+    scheduleRequering_protocol_requestMessage_encoding(algorithm,scheduAlgo);
+    write(wp,scheduAlgo,3);
+
+    // read port number
+//    char port_buffer[1];
+//    int n = read(rp,port_buffer,1);
+//    int port = atoi(port_buffer);
+//    printf("pid %d, recipient read port %s\n",getpid(),port_buffer);
+    int n;
+    // read the message passed by child;
+    char message[256];
+    n = read(rp,message,256);
+
+    // decode the message passed by child
+    // decode the number of schedules
+    int i = 1, j, k = 0, m, scheduleNum;
+    char temp[5] = "\0";
+    while (message[i] != '|'){
+        temp[k] = message[i];
+        i++;
+        k++;
+    }
+    int res = atoi(temp);
+    scheduleNum = res;
+    k = 0;
+    i++;
+
+    // write the schedule back to schedule
     // appointment index
     for (j = 0; j<scheduleNum; j++){
-        char temp[5];
-        for (m = 0; m<5; m++) temp[m] = '\0';
+        char temp[5] = "\0";
         while (message[i] != '|'){
             temp[k] = message[i];
             i++;
@@ -152,5 +148,7 @@ int**  scheduleRequering_protocol_responseMessage_decoding(char *message) {
         }
         i++;
     }
-    return schedule;
+
+    // return the schedule number
+    return scheduleNum;
 }

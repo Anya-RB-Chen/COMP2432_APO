@@ -25,7 +25,7 @@ rule CUSTOM_COMMAND
 rule C_COMPILER__COMP2432_project_G02_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = /Library/Developer/CommandLineTools/usr/bin/cc $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building C object $out
 
 
@@ -33,7 +33,7 @@ rule C_COMPILER__COMP2432_project_G02_Debug
 # Rule for linking C executable.
 
 rule C_EXECUTABLE_LINKER__COMP2432_project_G02_Debug
-  command = $PRE_LINK && /Library/Developer/CommandLineTools/usr/bin/cc $FLAGS -Wl,-search_paths_first -Wl,-headerpad_max_install_names $LINK_FLAGS $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  command = $PRE_LINK && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $FLAGS -Wl,-search_paths_first -Wl,-headerpad_max_install_names $LINK_FLAGS $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
   description = Linking C executable $TARGET_FILE
   restat = $RESTAT
 
@@ -42,7 +42,7 @@ rule C_EXECUTABLE_LINKER__COMP2432_project_G02_Debug
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/yuanyunchen/Documents/计算机/C/COMP2432_project_G02 -B/Users/yuanyunchen/Documents/计算机/C/COMP2432_project_G02/cmake-build-debug
+  command = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/zhangwenxuan/CLionProjects/COMP2432_APO/COMP2432_project_G02 -B/Users/zhangwenxuan/CLionProjects/COMP2432_APO/COMP2432_project_G02/cmake-build-debug
   description = Re-running CMake...
   generator = 1
 

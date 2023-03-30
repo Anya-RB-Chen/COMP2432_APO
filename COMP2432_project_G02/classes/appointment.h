@@ -7,6 +7,8 @@
 
 #include "time_type.h"
 
+
+
 typedef enum AP_TYPE {
     PrivateTime = 0, ProjectMeeting = 1, GroupStudy = 2, Gathering = 3//... descending order by priority.
 } AP_TYPE;

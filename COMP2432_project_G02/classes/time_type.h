@@ -5,6 +5,12 @@
 #ifndef COMP2432_PROJECT_G02_TIME_TYPE_H
 #define COMP2432_PROJECT_G02_TIME_TYPE_H
 
+#include <stdio.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct STime {
 //    char standardForm[]; //one choice
     int year, month, day;
@@ -26,6 +32,7 @@ STime getTimeFromStandardForm (char* str);
 int timeComparison (STime time1, STime time2);
 //--------------------------------------------------------------------------------------------------------------------------
 
+char* timeToString(STime time);
 
 #endif //COMP2432_PROJECT_G02_TIME_TYPE_H
 

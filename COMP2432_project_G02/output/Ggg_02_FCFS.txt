@@ -1,0 +1,22 @@
+Period 2023-4-1 to 2023-4-30
+Algorithm used: FCFS
+
+***Appointment Schedule***
+
+	John, you have 1 appointments.
+Date         Start   End     Type             People
+=========================================================================200-0-0 200-0-0 (null)
+
+	Paul, you have 1 appointments.
+Date         Start   End     Type             People
+=========================================================================200-0-0 200-0-0 (null)
+
+	Lucy, you have 1 appointments.
+Date         Start   End     Type             People
+=========================================================================200-0-0 200-0-0 (null)
+
+	Mary, you have 2 appointments.
+Date         Start   End     Type             People
+=========================================================================200-0-0 200-0-0 (null)
+200-0-0 200-0-0 (null)
+
