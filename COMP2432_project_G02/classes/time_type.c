@@ -109,7 +109,7 @@ int timeComparison (STime time1, STime time2){
 char* timeToString(STime time){
     // Used for the first line in output module
 
-    char* str = (char*)malloc(sizeof(char)*20);
+    char* str = (char*)calloc(20, sizeof(char));
     char year_c[5], month_c[3], day_c[3], hour_c[3], min_c[3];
     sprintf(year_c, "%d", time.year);
     sprintf(month_c, "%d", time.month);
