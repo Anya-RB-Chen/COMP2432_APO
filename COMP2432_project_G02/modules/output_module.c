@@ -55,7 +55,7 @@ int rescheduleALgorithm(int appointmentMap[],  SAppointment*  rescheduledAppoint
 //--------------------------------------------------------------------------------------------------------------------------
 
 // Only for test usage
-void main() {
-    int scheduleMatrix[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-    outputModule(3, 3, scheduleMatrix, FCFS);
-}
+//void main() {
+//    int scheduleMatrix[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+//    outputModule(3, 3, scheduleMatrix, FCFS);
+//}

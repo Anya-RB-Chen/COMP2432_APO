@@ -110,8 +110,9 @@ int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int
 //    printf("pid %d, recipient read port %s\n",getpid(),port_buffer);
     int n;
     // read the message passed by child;
-    char message[256] = "\0";
+    char message[256];
     n = read(rp,message,256);
+
     printf("pid %d, recipient read message %s\n",getpid(),message);
 
     // decode the message passed by child

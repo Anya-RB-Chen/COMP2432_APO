@@ -82,6 +82,7 @@ static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
         rp = g_c2p_fd[2*userIndex];
         wp = g_p2c_fd[2*userIndex + 1];
 
+
         // 新加的，因为之前没有语句写port number
         write(wp,"2",1);
 
