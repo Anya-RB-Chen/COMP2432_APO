@@ -24,9 +24,8 @@ int g_userNum;
 int g_apNum = 0;
 //assumption: not exceed the capacity
 //!security problem: visible to the user process
-
-SAppointment g_appointmentArray[128];  //assumption: not exceed the capacity
-
+const int DEFAULT_CAPACITY_OF_VECTOR = 1000;
+SAppointment g_appointmentArray[DEFAULT_CAPACITY_OF_VECTOR];  //assumption: not exceed the capacity
 
 //child process:
 //------------------------------------------------------------------------------------------------------------------------//------------------------------------------------------------------------------------------------------------------------//--------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +44,6 @@ void userProcess(int userIndex) {
     int write_Pointer = g_c2p_fd[2 * userIndex + 1];
 
     //(2) ds: appointment array.
-    SAppointment  ap_array[128];
     int arraySize = 0;
 
     //2,  interprocess communication.
@@ -71,14 +69,14 @@ void userProcess(int userIndex) {
             case 1: //appointment protocol
                 newAp = appointmentNotification_protocol_interpret_request(read_pointer);
                 //
-                ap_array[arraySize++] = newAp;
+                g_appointmentArray[arraySize++] = newAp;
 
 
                 //
                 break;
 
             case 2: //schedule protocol
-                test(ap_array,arraySize);
+                test(g_appointmentArray,arraySize);
                 algorithm = scheduleRequering_protocol_interpret_request (read_pointer);
                 //
                 //scheuduling service.
@@ -91,13 +89,13 @@ void userProcess(int userIndex) {
                 // 为了测试comment掉
                 switch (algorithm) {
                     case FCFS:
-                        FCFS_schedule_algorithm (ap_array, arraySize, personalScheduleMap);
+                        FCFS_schedule_algorithm (g_appointmentArray, arraySize, personalScheduleMap);
                         break;
                     case Priority:
-                        Priority_schedule_algorithm(ap_array,arraySize, personalScheduleMap);
+                        Priority_schedule_algorithm(g_appointmentArray,arraySize, personalScheduleMap);
                         break;
                     case SRT:
-                        SRT_schedule_algorithm(ap_array,arraySize, personalScheduleMap);
+                        SRT_schedule_algorithm(g_appointmentArray,arraySize, personalScheduleMap);
                         break;
 
                     default:
@@ -141,11 +139,16 @@ static void closeUserConnection (int userIndex) {
 
 
 void test(SAppointment ap[],int size){
-    int i;
+    int i,j;
     printf("array size %d\n",size);
     for (i = 0; i<size; i++){
-        printf("caller %s, year %d, mon %d, duration %f, idx %d\n", ap[i].caller,ap[i].startTime.year, ap[i].startTime.month,
+        printf("caller %s year %d, mon %d, duration %f, idx %d, ", ap[i].caller,ap[i].startTime.year, ap[i].startTime.month,
                ap[i].duration, ap[i].apIndex);
+        printf("callees are ");
+        for (j = 0;j<ap[i].numberOfCallee; j++){
+            printf("%s, ",ap[i].callee[j]);
+        }
+        printf("\n");
     }
 }
 

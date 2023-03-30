@@ -88,7 +88,6 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
     for(i = 0; i < count;i++){
         type[i] = instruction[i];
     }
-    printf("type %s",type);
     int mode = getInstructionMode(type);
     a.type = getAP_TYPE(mode);
 
@@ -130,7 +129,7 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
     //get the duration
     count++;
     float duration;
-    char duration_trans[3];
+    char duration_trans[4];
     for(i = 0; i < len; i++){
         if(instruction[count] == ' '){
             break;
@@ -188,9 +187,6 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
         else  a.numberOfCallee = num;
     }
     else a.numberOfCallee = num;
-
-    printf("caller %s, year %d, mon %d, duration %f, idx %d\n", a.caller,a.startTime.year, a.startTime.month,
-           a.duration, a.apIndex);
 
     return a;
 }
