@@ -262,9 +262,25 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
     }
 
     fprintf(f, "\n\n\n");
+
     //-------------------------------------------------------
     // print the Rescheduled List of every appointment
+    int numOfRescheduled = rescheduleALgorithm(appointmentMap, rescheduledAppointmentArray);
 
+    fprintf(f, "\n***Rescheduled List***\n\n");
+    fprintf(f, "There are %d appointments to be rescheduled.\n", numOfRescheduled);
+    fprintf(f, "=========================================================================\n");
+    int n;
+    for (n=0; n < numOfRescheduled; n++) {
+        fprintf(f, "%d. ", n+1);
+        fprintf(f, "%s  %s  %s  %s  %d", get_AP_TYPE_name(rescheduledAppointmentArray[n].type), nameToString(rescheduledAppointmentArray[n].caller),
+                dateToString(rescheduledAppointmentArray[n].startTime), 
+                timeToString(rescheduledAppointmentArray[n].startTime), 
+                rescheduledAppointmentArray[n].duration);
+        for (j=0; j < rescheduledAppointmentArray[n].numberOfCallee; j++) {
+            fprintf(f, " %s", rescheduledAppointmentArray[n].callee[j]);
+        }
+    }
 
     //-------------------------------------------------------
     // close the file
@@ -275,8 +291,11 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
 int rescheduleALgorithm(int appointmentMap[],  SAppointment*  rescheduledAppointmentArray)
 {
-    int size_of_array;
-    return size_of_array;
+    int count = 0;
+    while (rescheduledAppointmentArray[count].startTime.day) {
+        count++;
+    }
+    return count;
 }
 
 char* nameToString(char name[50]){
