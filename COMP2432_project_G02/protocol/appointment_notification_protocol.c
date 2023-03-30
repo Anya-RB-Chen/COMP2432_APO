@@ -179,6 +179,7 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
     if (caller[0]>=97 && caller[0]<=122){
         caller[0] -= 32;
     }
+
     strcpy(a->caller,caller);
     j = 0;
     i++;
@@ -238,9 +239,9 @@ void  appointmentNotification_protocol_API_(SAppointment ap,  int wp) {
     for (i = 0; i<100; i++) res[i] = '\0';
 
     char*msg = appointmentNotification_protocol_requestMessage_encoding(ap);
+
     strcat(res,"1");
     strcat(res,msg);
-
     write(wp,res, strlen(res));
 }
 

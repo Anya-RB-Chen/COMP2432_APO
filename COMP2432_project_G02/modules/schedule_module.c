@@ -17,7 +17,6 @@ const SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT};
 //input: instruction
 //output: go to txt file.
 void scheduleModule (char* intstuction) {
-    printf("%s\n",intstuction);
     //(1) interpret instruction
     SCHEDULING_ALGORITHM algorithm = interpretScheduleInstruction(intstuction);
 

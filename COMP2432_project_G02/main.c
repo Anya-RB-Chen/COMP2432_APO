@@ -221,7 +221,6 @@ void fileInput(){
     printf("Please input the file name: (complete directory are needed)\n");
     char dir[100];
     scanf("%s",dir);
-    printf("%s\n",dir);
     FILE *fp;
     fp = fopen(dir,"r");
     if (fp == NULL){
@@ -238,10 +237,8 @@ void fileInput(){
             i++;
         }
         instruction[i] = '\0';
-        printf("read |%s|\n",instruction);
 
         int instructionMode = getInstructionMode(instruction);
-        printf("mode %d\n",instructionMode);
 
         switch (instructionMode) {
             case 0:

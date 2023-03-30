@@ -27,7 +27,6 @@ SCHEDULING_ALGORITHM scheduleRequering_protocol_interpret_request (int rp){
     char buffer[4];
     int n;
     n = read(rp,buffer,10);
-    printf("read %s\n",buffer);
     if (strcmp(buffer,"FCF") == 0) {
         return FCFS;
     } else if (strcmp(buffer,"PRI") == 0){
@@ -112,8 +111,6 @@ int  scheduleRequering_protocol_recipientAPI(SCHEDULING_ALGORITHM algorithm, int
     // read the message passed by child;
     char message[256];
     n = read(rp,message,256);
-
-    printf("pid %d, recipient read message %s\n",getpid(),message);
 
     // decode the message passed by child
     // decode the number of schedules

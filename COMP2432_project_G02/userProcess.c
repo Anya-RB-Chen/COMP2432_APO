@@ -140,7 +140,6 @@ static void closeUserConnection (int userIndex) {
 
 void test(SAppointment ap[],int size){
     int i,j;
-    printf("array size %d\n",size);
     for (i = 0; i<size; i++){
         printf("caller %s year %d, mon %d, duration %f, idx %d, ", ap[i].caller,ap[i].startTime.year, ap[i].startTime.month,
                ap[i].duration, ap[i].apIndex);
