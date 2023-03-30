@@ -107,6 +107,7 @@ int timeComparison (STime time1, STime time2){
 }
 
 char* dateToString(STime time){
+
     // Used for the output module
     char* str = (char*)calloc(20, sizeof(char));
     char year_c[5], month_c[3], day_c[3];

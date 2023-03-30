@@ -15,6 +15,7 @@ typedef enum AP_TYPE {
 
 AP_TYPE getAP_TYPE (int mode);
 char* get_AP_TYPE_name (AP_TYPE type);
+AP_TYPE getTypeByString(char *input);
 
 typedef struct SAppointment {
     enum AP_TYPE type;

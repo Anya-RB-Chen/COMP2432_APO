@@ -73,8 +73,7 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
     for(i = 0; i < count;i++){
         type[i] = instruction[i];
     }
-    int mode = getInstructionMode(type);
-    a.type = getAP_TYPE(mode);
+    a.type = getTypeByString(type);
 
 
     //get the name of the caller

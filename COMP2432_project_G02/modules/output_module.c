@@ -71,6 +71,7 @@ int checkReceive(int size, int scheduleMatrix[][size], int appointmentIndex) {
     return 1;
 }
 
+
 // Count the time duration of accepted appointments of one user
 float countAcceptedTimeDuration(int size, int scheduleMatrix[][size], int appointmentArray[size]) {
     float count = 0;
@@ -88,7 +89,7 @@ int numberOfAppointment(int size, int scheduleMatrix[][size], int appointmentArr
     int count = 0;
     int j;
     for (j = 0; j < size; j++) {
-        if (checkReceive(size, scheduleMatrix, j) == 1) {
+        if (checkReceive(size, scheduleMatrix, j) == 1 && appointmentArray[j] == 1) {
             count++;
         }
     }
@@ -188,10 +189,11 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     //-------------------------------------------------------
     // print the Appointment Schedule of every user
+
     SAppointment receivedAppointmentArray[columns];
     int numberOfReceived = numberOfReceivedAppointment(columns, scheduleMatrix, receivedAppointmentArray);
 
-    int i, j;
+    int i, j, k;
     for (i = 0; i<g_userNum; i++){
         if (g_nameMap[i][0]>=97 && g_nameMap[i][0]<=122){
             g_nameMap[i][0] = g_nameMap[i][0] - 32;
@@ -200,27 +202,36 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     fprintf(f, "\n***Appointment Schedule***\n\n");
     for (i = 0; i < rows; i++) {
-        fprintf(f, "\t%s, you have %d appointments.\n", g_nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
+
+        fprintf(f, "\t%s, you have %d appointments. You need to attend them as your schedule.\n", g_nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
+
         fprintf(f, "Date         Start   End     Type             People\n");
         fprintf(f, "=========================================================================\n");
         for (j = 0; j < columns; j++) {
-            if (checkReceive(columns, scheduleMatrix, i) == 1 ) {
+            if (checkReceive(columns, scheduleMatrix, j) == 1 && scheduleMatrix[i][j] == 1) {
                 SAppointment appointment = g_appointmentArray[j];
-                fprintf(f, "%s   %s   %s   %s  ", dateToString(appointment.startTime), timeToString(appointment.startTime), timeToString(appointment.endTime), getAP_TYPE(appointment.type));
-                for (int k = 0; k < appointment.numberOfCallee; k++) {
+                fprintf(f, "%s   %s   %s   %s  ", dateToString(appointment.startTime), timeToString(appointment.startTime), timeToString(appointment.endTime)
+                        , get_AP_TYPE_name(appointment.type));
+                fprintf(f,"%s ",appointment.caller);
+                for (k = 0; k < appointment.numberOfCallee; k++) {
                     fprintf(f, "%s ", appointment.callee[k]);
                 }
-                fprintf(f, "                     - End of %s’s Schedule -\n                       ", g_nameMap[i]);
-                fprintf(f, "=========================================================================\n");
+
+                fprintf(f,"\n");
             }
         }
         fprintf(f, "\n");
+        fprintf(f, "                     - End of %s’s Schedule -                       \n", g_nameMap[i]);
+        fprintf(f, "=========================================================================\n\n");
     }
+
+
 
     //-------------------------------------------------------
     // print the Rejected List of every appointment
     SAppointment rejectedAppointmentArray[columns];
     int numberOfRejected = numberOfRejectedAppointment(columns, scheduleMatrix, rejectedAppointmentArray);
+
 
     fprintf(f, "\n***Rejected List***\n\n");
     fprintf(f, "Altogether there are %d appointments rejected.\n", numberOfRejected);
@@ -237,9 +248,10 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
                 fprintf(f, " %s", rejectedAppointmentArray[i].callee[j]);
             }
         }
+        fprintf(f, "\n");
     }
-    fprintf(f, "                     - End of Rejected List -\n                       ");
-    fprintf(f, "=========================================================================\n");
+    fprintf(f, "                          - End of Rejected List -                       \n");
+    fprintf(f, "=========================================================================\n\n");
 
     //-------------------------------------------------------
     // print the Performance of this algorithm
@@ -272,41 +284,42 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     fprintf(f, "\n\n\n");
 
-    //-------------------------------------------------------
-    // print the Rescheduled List of every appointment
-    SAppointment *  rescheduledAppointmentArray;
-    int appointmentMap[columns];
-    int apIndex, userIndex, reject = 0;
-    for (apIndex = 0; apIndex < columns; ++apIndex) {
-        reject = 0;
-        for (userIndex = 0; userIndex < rows; ++userIndex) {
-            if (scheduleMatrix[userIndex][apIndex] == 0) {
-                reject = 1;
-                break;
-            }
-        }
-        if (reject == 1) {
-            appointmentMap[apIndex] = 0;
-        } else {
-            appointmentMap[apIndex] = 1;
-        }
-    }
-    int numOfRescheduled = rescheduleALgorithm(appointmentMap, rescheduledAppointmentArray);
-
-    fprintf(f, "\n***Rescheduled List***\n\n");
-    fprintf(f, "There are %d appointments to be rescheduled.\n", numOfRescheduled);
-    fprintf(f, "=========================================================================\n");
-    int n;
-    for (n=0; n < numOfRescheduled; n++) {
-        fprintf(f, "%d. ", n+1);
-        fprintf(f, "%s  %s  %s  %s  %d", get_AP_TYPE_name(rescheduledAppointmentArray[n].type), nameToString(rescheduledAppointmentArray[n].caller),
-                dateToString(rescheduledAppointmentArray[n].startTime), 
-                timeToString(rescheduledAppointmentArray[n].startTime), 
-                rescheduledAppointmentArray[n].duration);
-        for (j=0; j < rescheduledAppointmentArray[n].numberOfCallee; j++) {
-            fprintf(f, " %s", rescheduledAppointmentArray[n].callee[j]);
-        }
-    }
+//    //-------------------------------------------------------
+//    // print the Rescheduled List of every appointment
+//    SAppointment *  rescheduledAppointmentArray;
+//    int appointmentMap[columns];
+//    int apIndex, userIndex, reject = 0;
+//    for (apIndex = 0; apIndex < columns; ++apIndex) {
+//        reject = 0;
+//        for (userIndex = 0; userIndex < rows; ++userIndex) {
+//            if (scheduleMatrix[userIndex][apIndex] == 0) {
+//                reject = 1;
+//                break;
+//            }
+//        }
+//        if (reject == 1) {
+//            appointmentMap[apIndex] = 0;
+//        } else {
+//            appointmentMap[apIndex] = 1;
+//        }
+//    }
+//    int numOfRescheduled = rescheduleALgorithm(appointmentMap, rescheduledAppointmentArray);
+//
+//
+//    fprintf(f, "\n***Rescheduled List***\n\n");
+//    fprintf(f, "There are %d appointments to be rescheduled.\n", numOfRescheduled);
+//    fprintf(f, "=========================================================================\n");
+//    int n;
+//    for (n=0; n < numOfRescheduled; n++) {
+//        fprintf(f, "%d. ", n+1);
+//        fprintf(f, "%s  %s  %s  %s  %d", get_AP_TYPE_name(rescheduledAppointmentArray[n].type), nameToString(rescheduledAppointmentArray[n].caller),
+//                dateToString(rescheduledAppointmentArray[n].startTime),
+//                timeToString(rescheduledAppointmentArray[n].startTime),
+//                rescheduledAppointmentArray[n].duration);
+//        for (j=0; j < rescheduledAppointmentArray[n].numberOfCallee; j++) {
+//            fprintf(f, " %s", rescheduledAppointmentArray[n].callee[j]);
+//        }
+//    }
 
     //-------------------------------------------------------
     // close the file

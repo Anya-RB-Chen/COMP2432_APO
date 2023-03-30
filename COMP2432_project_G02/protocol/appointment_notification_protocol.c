@@ -78,7 +78,7 @@ char *appointmentNotification_protocol_requestMessage_encoding(SAppointment ap) 
 SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *message) {
     SAppointment *a = (SAppointment*) malloc(sizeof (SAppointment));
     int i = 1, j = 0, k;
-    a->type = message[i] - 48;
+    a->type = getAP_TYPE(message[i] - 48);
     i += 2;
     char year[10];
     while (message[i] != '|'){

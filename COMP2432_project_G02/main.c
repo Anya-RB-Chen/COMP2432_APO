@@ -252,7 +252,7 @@ void fileInput(){
             default:
                 printf("Invalid instruction format. Input again !\n");
         }
-        usleep(100);
+        sleep(1);
     }
     fclose(fp);
 }

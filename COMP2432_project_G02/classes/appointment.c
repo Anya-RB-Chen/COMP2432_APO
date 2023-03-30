@@ -10,6 +10,7 @@
 
 
 AP_TYPE getAP_TYPE (int mode) {
+
     static const AP_TYPE apTypeArray[] = {PrivateTime, ProjectMeeting, GroupStudy, Gathering};
     return apTypeArray[mode];
 } 
@@ -33,8 +34,12 @@ char* get_AP_TYPE_name (AP_TYPE type) {
         default:
             message = "";
     }
-    char* result = (char*) (malloc((sizeof(char) *(strlen(message) + 1))));
-    strcpy(result, message);
-    return result;
+    return message;
 }
 
+AP_TYPE getTypeByString(char *input){
+    if (strcmp(input,"privateTime") == 0) return PrivateTime;
+    else if (strcmp(input,"projectMeeting") == 0) return ProjectMeeting;
+    else if (strcmp(input,"groupStudy") == 0) return GroupStudy;
+    else return GroupStudy;
+}
