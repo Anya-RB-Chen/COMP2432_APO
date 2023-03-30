@@ -120,7 +120,7 @@ void printMatrix(int rows, int columns, int scheduleMatrix[][columns]) {
 //--------------------------------------------------------------------------------------------------------------------------
 
 // Only for test usage
-void main() {
+void test_output() {
     g_userNum = 4;
     g_apNum = 3;
     int scheduleMatrix[4][3] = {{-1, 1, 0}, {1, 0, 0}, {1, -1, -1}, {0, 1, 1}};

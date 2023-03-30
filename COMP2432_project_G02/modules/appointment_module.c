@@ -42,7 +42,7 @@ void appointmentModule (char* instruction) {
 //    appointment.type = ProjectMeeting;
 
     g_appointmentArray[g_apNum++] = appointment;  //! problem: apo save appointment information.
-    printf("current apNum %d\n",g_apNum);
+//    printf("current apNum %d\n",g_apNum);
 
    //2,  notify the users about the appointment
     // notify all the caller a& callee

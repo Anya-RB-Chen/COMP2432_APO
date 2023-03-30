@@ -234,7 +234,7 @@ void fileInput(){
         char instruction[1000];
         fgets(instruction,1000,fp);
         i = 0;
-        while (instruction[i] != '\n'){
+        while (instruction[i] != '\n' && instruction[i] != EOF){
             i++;
         }
         instruction[i] = '\0';
@@ -244,6 +244,8 @@ void fileInput(){
         printf("mode %d\n",instructionMode);
 
         switch (instructionMode) {
+            case 0:
+                break;
             case 1:
                 appointmentModule(instruction); // interpret the instruction
                 break;
@@ -253,7 +255,7 @@ void fileInput(){
             default:
                 printf("Invalid instruction format. Input again !\n");
         }
+        sleep(1);
     }
-
     fclose(fp);
 }
