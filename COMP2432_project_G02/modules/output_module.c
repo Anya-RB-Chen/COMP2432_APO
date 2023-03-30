@@ -9,25 +9,27 @@
 
 #include "modules.h"
 
-#include "../main.c"            //include the main function
-#include "../classes/scheduling.c" 
-#include "../classes/appointment.c"
-#include "../classes/time_type.c"
-#include "appointment_module.c"
-// #include "../protocol/protocol.h"
-#include "../protocol/appointment_notification_protocol.c"
-#include "schedule_module.c"
+//#include "../main.c"            //include the main function
+//#include "../classes/scheduling.c"
+//#include "../classes/appointment.c"
+//#include "../classes/time_type.c"
+//#include "appointment_module.c"
+//// #include "../protocol/protocol.h"
+//#include "../protocol/appointment_notification_protocol.c"
+//#include "schedule_module.c"
 
 // Global variables
 int g_fileNum = 0;
-   
+char* nameToString(char name[50]);
 //--------------------------------------------------------------------------------------------------------------------------
 void printAllAlgorithm(int scheduleMatrix[][g_apNum]) 
 {
     // printf("FCFS\n");
     // printf("Priority\n");
     // printf("SRT\n");
-    for (int i=0; i<3; i++) {
+    SCHEDULING_ALGORITHM SCHEDULING_ALGORITHM_ARRAY[] = {FCFS, Priority,SRT};
+    int i;
+    for (i=0; i<3; i++) {
         outputModule(g_userNum, g_apNum, scheduleMatrix, SCHEDULING_ALGORITHM_ARRAY[i]);
     }
 }
@@ -37,7 +39,8 @@ void printAllAlgorithm(int scheduleMatrix[][g_apNum])
 // Count the time duration of all appointments of one user
 float countTimeDuration(int size, int scheduleMatrix[][size], int appointmentArray[size]) {
     float count = 0;
-    for (int j = 0; j < size; j++) {
+    int j;
+    for (j = 0; j < size; j++) {
         if (appointmentArray[j] == 1) {
             count += g_appointmentArray[j].duration;
         }
@@ -47,7 +50,8 @@ float countTimeDuration(int size, int scheduleMatrix[][size], int appointmentArr
 
 // Check whether the appointment has been received by all users
 int checkReceive(int size, int scheduleMatrix[][size], int appointmentIndex) {
-    for (int i = 0; i < g_userNum; i++) {
+    int i;
+    for (i = 0; i < g_userNum; i++) {
         if (scheduleMatrix[i][appointmentIndex] == 0) {
             return 0;
         }
@@ -58,7 +62,8 @@ int checkReceive(int size, int scheduleMatrix[][size], int appointmentIndex) {
 // Count the time duration of accepted appointments of one user
 float countAcceptedTimeDuration(int size, int scheduleMatrix[][size], int appointmentArray[size]) {
     float count = 0;
-    for (int j = 0; j < size; j++) {
+    int j;
+    for (j = 0; j < size; j++) {
         if (appointmentArray[j] == 1 && checkReceive(size, scheduleMatrix, j) == 1) {
             count += g_appointmentArray[j].duration;
         }
@@ -69,7 +74,8 @@ float countAcceptedTimeDuration(int size, int scheduleMatrix[][size], int appoin
 // Count the number of appointments of one user that have been received by all users
 int numberOfAppointment(int size, int scheduleMatrix[][size], int appointmentArray[size]) {
     int count = 0;
-    for (int j = 0; j < size; j++) {
+    int j;
+    for (j = 0; j < size; j++) {
         if (checkReceive(size, scheduleMatrix, j) == 1) {
             count++;
         }
@@ -81,8 +87,9 @@ int numberOfAppointment(int size, int scheduleMatrix[][size], int appointmentArr
 // Count the overall appointments that have been received by all users
 int numberOfReceivedAppointment(int size, int scheduleMatrix[][size], SAppointment receivedAppointmentArray[size]) {
     int count = 0;
-    for (int j = 0; j < size; j++) {
-        for (int i=0; i < g_userNum; i++) {
+    int i,j;
+    for (j = 0; j < size; j++) {
+        for (i=0; i < g_userNum; i++) {
             if (scheduleMatrix[i][j] == 1) {
                 receivedAppointmentArray[count] = g_appointmentArray[j];
                 count++;
@@ -96,8 +103,9 @@ int numberOfReceivedAppointment(int size, int scheduleMatrix[][size], SAppointme
 // Count the overall appointments that have been rejected by all users
 int numberOfRejectedAppointment(int size, int scheduleMatrix[][size], SAppointment rejectedAppointmentArray[size]) {
     int count = 0;
-    for (int j = 0; j < size; j++) {
-        for (int i=0; i < g_userNum; i++) {
+    int i,j;
+    for (j = 0; j < size; j++) {
+        for (i=0; i < g_userNum; i++) {
             if (scheduleMatrix[i][j] == 0) {
                 rejectedAppointmentArray[count] = g_appointmentArray[j];
                 count++;
@@ -174,15 +182,22 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
     SAppointment receivedAppointmentArray[columns];
     int numberOfReceived = numberOfReceivedAppointment(columns, scheduleMatrix, receivedAppointmentArray);
 
+    int i, j;
+    for (i = 0; i<g_userNum; i++){
+        if (g_nameMap[i][0]>=97 && g_nameMap[i][0]<=122){
+            g_nameMap[i][0] = g_nameMap[i][0] - 32;
+        }
+    }
+
     fprintf(f, "\n***Appointment Schedule***\n\n");
-    for (int i = 0; i < rows; i++) {
+    for (i = 0; i < rows; i++) {
         fprintf(f, "\t%s, you have %d appointments.\n", g_nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
         fprintf(f, "Date         Start   End     Type             People\n");
         fprintf(f, "=========================================================================\n");
-        for (int j = 0; j < columns; j++) {
+        for (j = 0; j < columns; j++) {
             if (checkReceive(columns, scheduleMatrix, i) == 1 ) {
                 SAppointment appointment = g_appointmentArray[j];
-                fprintf(f, "%s   %s   %s   %s  ", dateToString(appointment.startTime), timeToString(appointment.startTime), timeToString(appointment.endTime), get_AP_Type_name(appointment.type));
+                fprintf(f, "%s   %s   %s   %s  ", dateToString(appointment.startTime), timeToString(appointment.startTime), timeToString(appointment.endTime), getAP_TYPE(appointment.type));
                 for (int k = 0; k < appointment.numberOfCallee; k++) {
                     fprintf(f, "%s ", appointment.callee[k]);
                 }
@@ -202,14 +217,14 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
     fprintf(f, "Altogether there are %d appointments rejected.\n", numberOfRejected);
     fprintf(f, "=========================================================================\n");
 
-    for (int i=0; i < columns; i++) {
+    for (i=0; i < columns; i++) {
         if (rejectedAppointmentArray[i].startTime.day) {
             fprintf(f, "%d. ", i+1);
             fprintf(f, "%s %s %s %s %d", get_AP_TYPE_name(rejectedAppointmentArray[i].type), nameToString(rejectedAppointmentArray[i].caller),
                     dateToString(rejectedAppointmentArray[i].startTime), 
                     timeToString(rejectedAppointmentArray[i].startTime), 
                     rejectedAppointmentArray[i].duration);
-            for (int j=0; j < rejectedAppointmentArray[i].numberOfCallee; j++) {
+            for (j=0; j < rejectedAppointmentArray[i].numberOfCallee; j++) {
                 fprintf(f, " %s", rejectedAppointmentArray[i].callee[j]);
             }
         }
@@ -231,7 +246,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     // Number of Requests Accepted by Individual Users
     fprintf(f, "Number of Requests Accepted by Individual:\n\n");
-    for (int i = 0; i < rows; i++) {
+    for (i = 0; i < rows; i++) {
         fprintf(f, "\t%s \t\t\t %d\n", g_nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
     }
 
@@ -239,7 +254,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     // Utilization of Time Slot
     fprintf(f, "Utilization of Time Slot:\n\n");
-    for (int i = 0; i < rows; i++) {
+    for (i = 0; i < rows; i++) {
         float timeDuration = countTimeDuration(columns, scheduleMatrix, scheduleMatrix[i]);
         float acceptedDuration = countAcceptedTimeDuration(columns, scheduleMatrix, scheduleMatrix[i]);
         float utilization = acceptedDuration / timeDuration;
@@ -273,8 +288,9 @@ char* nameToString(char name[50]){
 //--------------------------------------------------------------------------------------------------------------------------
 // Only used for test
 void printMatrix(int rows, int columns, int scheduleMatrix[][columns]) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
+    int i, j;
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < columns; j++) {
             printf("%d\t", scheduleMatrix[i][j]);
         }
         printf("\n");

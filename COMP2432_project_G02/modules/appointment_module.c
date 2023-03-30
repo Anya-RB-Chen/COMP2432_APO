@@ -26,6 +26,7 @@ void appointmentModule (char* instruction) {
     SAppointment appointment = interpretAppointmentInstruction(instruction);
     appointment.apIndex = g_apNum;
 
+
     g_appointmentArray[g_apNum++] = appointment;  //! problem: apo save appointment information.
 
    //2,  notify the users about the appointment
@@ -39,6 +40,7 @@ void appointmentModule (char* instruction) {
     int i;
     for (i = 0; i < appointment.numberOfCallee; i++) {
         char callee[15];// dangerous
+        printf("caller %s\n",appointment.callee[i]);
         strcpy(callee,appointment.callee[i]);
         writePtr_to_caller = get_p2cWritePointer_by_name(callee);
         if ( writePtr_to_caller == -1) {
