@@ -9,11 +9,13 @@
 
 #include "modules.h"
 
-#include "../main.h"                //include the main function
+#include "../main.c"            //include the main function
 #include "../classes/scheduling.c" 
 #include "../classes/appointment.c"
 #include "../classes/time_type.c"
 #include "appointment_module.c"
+// #include "../protocol/protocol.h"
+#include "../protocol/appointment_notification_protocol.c"
    
 //--------------------------------------------------------------------------------------------------------------------------
 void printAllAlgorithm() {
@@ -32,8 +34,6 @@ int numberOfAppointment(int appointmentMap[], int size) {
     }
     return count;
 }
-
-
 
 //output module:
 
@@ -89,13 +89,13 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
         fprintf(f, "=========================================================================\n");
         for (int j = 0; j < columns; j++) {
             if (scheduleMatrix[i][j] == 1) {
-                fprintf(f, "%s %s %s\n", timeToString(g_appointmentArray[j].startTime), timeToString(g_appointmentArray[j].endTime));
+                // fprintf(f, "%s %s %s\n", timeToString(g_appointmentArray[j].startTime), timeToString(g_appointmentArray[j].endTime));
+                fprintf(f, "                     - End of %s’s Schedule -\n                       ", nameMap[i]);
+                fprintf(f, "=========================================================================\n");
             }
         }
         fprintf(f, "\n");
     }
-
-
 
 }
 //--------------------------------------------------------------------------------------------------------------------------
@@ -124,8 +124,6 @@ void test_output() {
     g_userNum = 4;
     g_apNum = 3;
     int scheduleMatrix[4][3] = {{-1, 1, 0}, {1, 0, 0}, {1, -1, -1}, {0, 1, 1}};
-
-    SAppointment appointment1 = interpretAppointmentInstruction("privateTime paul 20230401 1800 2.0");
 
     // Comment out the following line to test the scheduleMatrix
     printMatrix(g_userNum, g_apNum, scheduleMatrix);
