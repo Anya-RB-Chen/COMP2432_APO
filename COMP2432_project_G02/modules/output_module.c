@@ -16,12 +16,20 @@
 #include "appointment_module.c"
 // #include "../protocol/protocol.h"
 #include "../protocol/appointment_notification_protocol.c"
+#include "schedule_module.c"
+
+// Global variables
+int g_fileNum = 0;
    
 //--------------------------------------------------------------------------------------------------------------------------
-void printAllAlgorithm() {
-    printf("FCFS\n");
-    printf("Priority\n");
-    printf("SRT\n");
+void printAllAlgorithm(int scheduleMatrix[][g_apNum]) 
+{
+    // printf("FCFS\n");
+    // printf("Priority\n");
+    // printf("SRT\n");
+    for (int i=0; i<3; i++) {
+        outputModule(g_userNum, g_apNum, scheduleMatrix, SCHEDULING_ALGORITHM_ARRAY[i]);
+    }
 }
 
 //--------------------------------------------------------------------------------------------------------------------------
@@ -110,10 +118,12 @@ int numberOfRejectedAppointment(int size, int scheduleMatrix[][size], SAppointme
 // 1 -- accecpt, 0 -- reject, -1 -- not included
 void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDULING_ALGORITHM algorithm) {
 
+    g_fileNum++;
+
     //-------------------------------------------------------
     // This section is only for test
     // Comment this section when submit
-    char nameMap[10][50] = {"John", "Paul", "Lucy", "Mary"};
+    // char nameMap[10][50] = {"John", "Paul", "Lucy", "Mary"};
     //-------------------------------------------------------
 
     //-------------------------------------------------------
@@ -123,8 +133,22 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     char* schedule_name = get_SchedingAlgorithm_name(algorithm);
     char* filename = (char*)calloc(100, sizeof(char));
-    strcat(filename, "Ggg_02_");
-    strcat(filename, schedule_name);
+    strcat(filename, "Ggg_");
+
+    if (g_fileNum < 10) {
+        strcat(filename, "0");
+    }
+    char fileNum[10];
+    sprintf(fileNum, "%d", g_fileNum);
+    strcat(filename, fileNum);
+    strcat(filename, "_");
+
+    if (strcmp(schedule_name, "") == 0) {
+        strcat(filename, "All");
+    } else{
+        strcat(filename, schedule_name);
+    }
+
     strcat(filename, ".txt");
 
     strcat(path, filename);
@@ -152,7 +176,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     fprintf(f, "\n***Appointment Schedule***\n\n");
     for (int i = 0; i < rows; i++) {
-        fprintf(f, "\t%s, you have %d appointments.\n", nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
+        fprintf(f, "\t%s, you have %d appointments.\n", g_nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
         fprintf(f, "Date         Start   End     Type             People\n");
         fprintf(f, "=========================================================================\n");
         for (int j = 0; j < columns; j++) {
@@ -162,7 +186,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
                 for (int k = 0; k < appointment.numberOfCallee; k++) {
                     fprintf(f, "%s ", appointment.callee[k]);
                 }
-                fprintf(f, "                     - End of %s’s Schedule -\n                       ", nameMap[i]);
+                fprintf(f, "                     - End of %s’s Schedule -\n                       ", g_nameMap[i]);
                 fprintf(f, "=========================================================================\n");
             }
         }
@@ -208,7 +232,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
     // Number of Requests Accepted by Individual Users
     fprintf(f, "Number of Requests Accepted by Individual:\n\n");
     for (int i = 0; i < rows; i++) {
-        fprintf(f, "\t%s \t\t\t %d\n", nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
+        fprintf(f, "\t%s \t\t\t %d\n", g_nameMap[i], numberOfAppointment(columns, scheduleMatrix, scheduleMatrix[i]));
     }
 
     fprintf(f, "\n\n\n");
@@ -219,7 +243,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
         float timeDuration = countTimeDuration(columns, scheduleMatrix, scheduleMatrix[i]);
         float acceptedDuration = countAcceptedTimeDuration(columns, scheduleMatrix, scheduleMatrix[i]);
         float utilization = acceptedDuration / timeDuration;
-        fprintf(f, "\t%s \t\t\t %f\n", nameMap[i], utilization);
+        fprintf(f, "\t%s \t\t\t %f\n", g_nameMap[i], utilization);
     }
 
     fprintf(f, "\n\n\n");
