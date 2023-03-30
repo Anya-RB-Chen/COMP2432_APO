@@ -5,6 +5,7 @@
 #include "time_type.h"
 
 
+
 STime getTime (char* date, char* hour){
     STime a;
     int date_i = atol(date);
@@ -108,11 +109,15 @@ int timeComparison (STime time1, STime time2){
 char* timeToString(STime time){
     char* str = (char*)malloc(sizeof(char)*20);
     char year_c[5], month_c[3], day_c[3], hour_c[3], min_c[3];
-    sprintf(year_c, "%d", time.year);
-    sprintf(month_c, "%d", time.month);
-    sprintf(day_c, "%d", time.day);
-    sprintf(hour_c, "%d", time.hour);
-    sprintf(min_c, "%d", time.minute);
+    for (int i = 0; i < 5; i++) {
+        year_c[i] = time.year / (int)pow(10, 4 - i) + '0';
+    }
+    for (int i = 0; i < 3; i++) {
+        month_c[i] = time.month / (int)pow(10, 2 - i) + '0';
+        day_c[i] = time.day / (int)pow(10, 2 - i) + '0';
+        hour_c[i] = time.hour / (int)pow(10, 2 - i) + '0';
+        min_c[i] = time.minute / (int)pow(10, 2 - i) + '0';
+    }
     strcat(str, year_c);
     strcat(str, month_c);
     strcat(str, day_c);

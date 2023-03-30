@@ -20,12 +20,16 @@
 //need to maintain the sequence of output file.
 void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDULING_ALGORITHM algorithm) {
 
-    if (g_startTime.day == NULL || g_endTime.day == NULL) {
+    STime* ptr_startTime = &g_startTime;
+    STime* ptr_endTime = &g_endTime;
+
+    if ( !ptr_startTime || !ptr_endTime) {
         g_startTime = getTime("20230401", "0000");
         g_endTime = getTime("20230430", "2359");
     }
-    
-    printf("Period 2023-04-01 to 2023-04-30\n");
+    else{printf("eriod %s to %s\n", timeToString(g_startTime), timeToString(g_endTime));}
+
+    printf("Period %s to %s\n", timeToString(g_startTime), timeToString(g_endTime));
 
     char* schedule_name = get_SchedingAlgorithm_name(algorithm);
     if (strcmp(schedule_name, "") == 0) {
