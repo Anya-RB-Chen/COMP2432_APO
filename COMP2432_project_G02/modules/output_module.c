@@ -166,7 +166,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
 
     //-------------------------------------------------------
     // print the schedule type
-    if (strcmp(schedule_name, "") == 0) {printAllAlgorithm();   return;}
+    if (strcmp(schedule_name, "") == 0) {printAllAlgorithm(scheduleMatrix);   return;}
     fprintf(f, "Algorithm used: %s\n", schedule_name);
 
     //-------------------------------------------------------
@@ -182,7 +182,7 @@ void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDUL
         for (int j = 0; j < columns; j++) {
             if (checkReceive(columns, scheduleMatrix, i) == 1 ) {
                 SAppointment appointment = g_appointmentArray[j];
-                fprintf(f, "%s   %s   %s   %s  ", dateToString(appointment.startTime), timeToString(appointment.startTime), timeToString(appointment.endTime), get_AppointmentType_name(appointment.type));
+                fprintf(f, "%s   %s   %s   %s  ", dateToString(appointment.startTime), timeToString(appointment.startTime), timeToString(appointment.endTime), get_AP_Type_name(appointment.type));
                 for (int k = 0; k < appointment.numberOfCallee; k++) {
                     fprintf(f, "%s ", appointment.callee[k]);
                 }
