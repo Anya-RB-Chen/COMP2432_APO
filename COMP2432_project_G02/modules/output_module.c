@@ -87,14 +87,11 @@ int numberOfAppointment(int size, int scheduleMatrix[][size], int appointmentArr
 // Count the overall appointments that have been received by all users
 int numberOfReceivedAppointment(int size, int scheduleMatrix[][size], SAppointment receivedAppointmentArray[size]) {
     int count = 0;
-    int i,j;
+    int j;
     for (j = 0; j < size; j++) {
-        for (i=0; i < g_userNum; i++) {
-            if (scheduleMatrix[i][j] == 1) {
-                receivedAppointmentArray[count] = g_appointmentArray[j];
-                count++;
-                break;
-            }
+        if (checkReceive(size, scheduleMatrix, j) == 1) {
+            receivedAppointmentArray[count] = g_appointmentArray[j];
+            count++;
         }
     }
     return count;
