@@ -70,6 +70,7 @@ char *appointmentNotification_protocol_requestMessage_encoding(SAppointment ap) 
     char *numCallee = Int2String(ap.numberOfCallee,buffer);
     strcat(res,numCallee);
     strcat(res,seperate);
+
     return res;
 }
 
@@ -142,7 +143,6 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
     i++;
     a->startTime.minute = atoi(res3);
 
-
     // get duration
     char dura[10];
     while (message[i] != '|'){
@@ -153,7 +153,17 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
     j = 0;
     i++;
     a->duration = atof(dura);
+    // get end time
+    a->endTime = a->startTime;
+    if(atol(dura) != atoi(dura)){
+        //yes, there is a 0.5
+        a->endTime.minute += 30;
+        if(a->endTime.minute >= 60) a->endTime.minute -= 60;
+        a->endTime.hour += 1;
+    }
 
+    //add the hours
+    a->endTime.hour += atoi(dura);
 
     // get caller
     char caller[10];
@@ -166,10 +176,12 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
         i++;
         j++;
     }
+    if (caller[0]>=97 && caller[0]<=122){
+        caller[0] -= 32;
+    }
     strcpy(a->caller,caller);
     j = 0;
     i++;
-
 
     // get appointment index
     char idx[3];
@@ -194,6 +206,9 @@ SAppointment *appointmentNotification_protocol_requestMessage_decoding(char *mes
             k++;
         }
         i++;
+        if (temp[0]>=97 && temp[0]<=122){
+            temp[0] -= 32;
+        }
         strcpy(a->callee[j],temp);
         for (m = k-1; m<10; m++){
             temp[m] = '\0';

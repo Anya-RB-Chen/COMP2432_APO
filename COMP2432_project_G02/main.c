@@ -32,6 +32,7 @@ int g_userNum;
 //(4) appointment
 int g_apNum;
 
+void fileInput();
 //!security problem: visible to the user process
 
 //static function/ variable declaration.
@@ -50,32 +51,43 @@ int main(int argc, char* argv[]) {
    //(2) interpreter
    //...file input !
    //....
+    printf("Please choose your input mode(input 1 or 2):\n1) Batch input(input a file);\n2) Command-line input.\n");
+    int choice;
+    scanf("%d",&choice);
+    while (!(choice == 1 || choice== 2)){
+        printf("Invalid input. Please input again. (1 or 2)\n");
+        fflush(stdin);
+        scanf("%d",&choice);
+    }
 
-   printf("Parent %d\n",getpid());
+    if (choice == 1){
+        fflush(stdin);
+        fileInput();
+    } else {
+        int endProgram = 0;
+        while (endProgram != 1) {
+            fflush(stdin);
+            char *instruction = (char *) malloc((sizeof(char)) * 100);
+            printf("Please enter appointment:\n");
+            scanf("%[^\n]", instruction);
 
-   int endProgram = 0;
-   while (endProgram != 1) {
-       char *instruction = (char *)malloc((sizeof (char))*100);
-       printf("Please enter appointment:\n");
-       scanf("%[^\n]", instruction);
+            int instructionMode = getInstructionMode(instruction);
 
-       int instructionMode = getInstructionMode(instruction);
-
-       switch (instructionMode) {
-           case 0:
-               endProgram = 1;
-               break;
-           case 1:
-                appointmentModule(instruction); // interprete the instruction
-                break;
-            case 2:
-                scheduleModule(instruction);
-                break;
-            default:
-                printf("Invalid instruction format. Input again !\n");
+            switch (instructionMode) {
+                case 0:
+                    endProgram = 1;
+                    break;
+                case 1:
+                    appointmentModule(instruction); // interpret the instruction
+                    break;
+                case 2:
+                    scheduleModule(instruction);
+                    break;
+                default:
+                    printf("Invalid instruction format. Input again !\n");
+            }
+            free(instruction);
         }
-       free(instruction);
-       fflush(stdin);
     }
 
     //(3) exit the program
@@ -203,4 +215,45 @@ static void freeUpProgram() {
     while (childid != -1) {
         childid = wait(&status);
     }
+}
+
+void fileInput(){
+    printf("Please input the file name: (complete directory are needed)\n");
+    char dir[100];
+    scanf("%s",dir);
+    printf("%s\n",dir);
+    FILE *fp;
+    fp = fopen(dir,"r");
+    if (fp == NULL){
+        perror("Cannot open the file. Please check the file directory.\n");
+        exit(1);
+    }
+    int i;
+    // read the file line by line
+    while (!feof(fp)){
+        char instruction[1000];
+        fgets(instruction,1000,fp);
+        i = 0;
+        while (instruction[i] != '\n'){
+            i++;
+        }
+        instruction[i] = '\0';
+        printf("read |%s|\n",instruction);
+
+        int instructionMode = getInstructionMode(instruction);
+        printf("mode %d\n",instructionMode);
+
+        switch (instructionMode) {
+            case 1:
+                appointmentModule(instruction); // interpret the instruction
+                break;
+            case 2:
+                scheduleModule(instruction);
+                break;
+            default:
+                printf("Invalid instruction format. Input again !\n");
+        }
+    }
+
+    fclose(fp);
 }

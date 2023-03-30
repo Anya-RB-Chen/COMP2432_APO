@@ -129,6 +129,7 @@ static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
 
 //output: rescheduledAppointments -- save the appointments to the  rescheduledAppointments (need malloc), return array size.
 static int rescheduling( int (*scheduleMatrix)[g_apNum],SAppointment* rescheduledAppointments) {
+
     return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------

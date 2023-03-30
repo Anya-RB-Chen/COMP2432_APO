@@ -17,7 +17,8 @@
 //global variable definition
 //(0) DS
   //default capacity of vector in this program.
-#define DEFAULT_CAPACITY_OF_VECTOR = 128;
+
+extern const int DEFAULT_CAPACITY_OF_VECTOR;
 
 //（1）time
 STime g_startTime, g_endTime; //define valid time range
@@ -41,7 +42,7 @@ int g_apNum;
   //assumption: not exceed the capacity
 //!security problem: visible to the user process
 
-SAppointment g_appointmentArray[128];  //assumption: not exceed the capacity
+SAppointment g_appointmentArray[1000];  //assumption: not exceed the capacity
 
 #define SCHEDULE_REQUERING_PROTOCOL_PORT_NUMBER = 1;
 #define APPOINTMENT_NOTIFICATION_PROTOCOL_PORT_NUMBER = 2;
