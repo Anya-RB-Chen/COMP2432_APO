@@ -109,19 +109,19 @@ int timeComparison (STime time1, STime time2){
 char* timeToString(STime time){
     char* str = (char*)malloc(sizeof(char)*20);
     char year_c[5], month_c[3], day_c[3], hour_c[3], min_c[3];
-    for (int i = 0; i < 5; i++) {
-        year_c[i] = time.year / (int)pow(10, 4 - i) + '0';
-    }
-    for (int i = 0; i < 3; i++) {
-        month_c[i] = time.month / (int)pow(10, 2 - i) + '0';
-        day_c[i] = time.day / (int)pow(10, 2 - i) + '0';
-        hour_c[i] = time.hour / (int)pow(10, 2 - i) + '0';
-        min_c[i] = time.minute / (int)pow(10, 2 - i) + '0';
-    }
+    sprintf(year_c, "%d", time.year);
+    sprintf(month_c, "%d", time.month);
+    sprintf(day_c, "%d", time.day);
+    sprintf(hour_c, "%d", time.hour);
+    sprintf(min_c, "%d", time.minute);
+    printf("year: %s, month: %s, day: %s, hour: %s, min: %s\n", year_c, month_c, day_c, hour_c, min_c);
+    strcat(str, "20");
     strcat(str, year_c);
+    strcat(str, "-");
     strcat(str, month_c);
+    strcat(str, "-");
     strcat(str, day_c);
-    strcat(str, hour_c);
-    strcat(str, min_c);
+    // strcat(str, hour_c);
+    // strcat(str, min_c);
     return str;
 }

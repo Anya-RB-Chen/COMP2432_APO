@@ -20,25 +20,29 @@
 //need to maintain the sequence of output file.
 void outputModule (int rows, int columns, int scheduleMatrix[][columns], SCHEDULING_ALGORITHM algorithm) {
 
-    STime* ptr_startTime = &g_startTime;
-    STime* ptr_endTime = &g_endTime;
-
-    if ( !ptr_startTime || !ptr_endTime) {
-        g_startTime = getTime("20230401", "0000");
-        g_endTime = getTime("20230430", "2359");
+    // print the time period
+    if ( !g_startTime.day || !g_endTime.day) {
+        g_startTime = getTime("230401", "0000");
+        g_endTime = getTime("230430", "2359");
+        // printf("No time period\n");
     }
-    else{printf("eriod %s to %s\n", timeToString(g_startTime), timeToString(g_endTime));}
-
     printf("Period %s to %s\n", timeToString(g_startTime), timeToString(g_endTime));
 
+    // print the schedule type
     char* schedule_name = get_SchedingAlgorithm_name(algorithm);
-    if (strcmp(schedule_name, "") == 0) {
-        strcpy(schedule_name, "ALL");
-    }
+    if (strcmp(schedule_name, "") == 0) {strcpy(schedule_name, "ALL");}
     printf("Algorithm used: %s\n", schedule_name);
 
     printf("\n***Appointment Schedule***\n");
 }
+//--------------------------------------------------------------------------------------------------------------------------
+
+int rescheduleALgorithm(int appointmentMap[],  SAppointment*  rescheduledAppointmentArray)
+{
+    int size_of_array;
+    return size_of_array;
+}
+
 //--------------------------------------------------------------------------------------------------------------------------
 
 // Only for test usage
