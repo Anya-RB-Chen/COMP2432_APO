@@ -29,7 +29,7 @@ static int getUserIndex (char* userName);
 static void saveAppointmentTime (SAppointment appointment,int timeSize, int scheduleMatrix[][timeSize]);
 static int fitHole (int startTimeIndex, int duration, const int participantArray[],int timeSize, int scheduleMatrix[][timeSize]);
 
-int rescheduleALgorithm(const int apValidMap[],  SAppointment*  resApArray);
+int rescheduleALgorithm(const int apValidMap[],  SAppointment**  resApArray);
 // Global variables
 int g_fileNum = 0;
 char* nameToString(char name[50]);
@@ -349,9 +349,10 @@ void printMatrix(int rows, int columns, int scheduleMatrix[][columns]) {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------
+void printTimeTable (int timeSize, int scheduleMatrix[][timeSize]);
 
 //boundary case: not valid -> all time = -1.
-int rescheduleALgorithm(const int apValidMap[],  SAppointment*  resApArray) {
+int rescheduleALgorithm(const int apValidMap[],  SAppointment**  resApPtr) {
     //0, initlize DS: resApArray, scheduleMatrix, rejestApMatrix
     //(1) get rejected appointment number.
     int rejApNum = 0;
@@ -362,13 +363,17 @@ int rescheduleALgorithm(const int apValidMap[],  SAppointment*  resApArray) {
         }
     }
     //(2) initialize -- calloc have default initialization -> 0.
-    resApArray =  calloc(rejApNum ,sizeof (SAppointment)); // resArray contains new Appointment.
-
+//    resApArray =  calloc(rejApNum ,sizeof (SAppointment)); // resArray contains new Appointment.
+    *resApPtr = malloc(rejApNum * sizeof(SAppointment));
+    SAppointment * resApArray = *resApPtr;
     int (*rejectApMatrix)[g_userNum] = calloc(rejApNum, sizeof *rejectApMatrix); //rejectApMatrix[rejIndex][userIndex] -> 1 / 0 need to free up. // very dandrous
 
     int timeSize = getTimeSpan(g_startTime, g_endTime);
     int (*scheduleMatrix)[timeSize] = calloc(g_userNum, sizeof *scheduleMatrix);
+//    printTimeTable(timeSize, scheduleMatrix);
 
+//--------------------------------------------------------------------------------------------------------------------------
+    //initilize:
     //1, set scheduleMatrix & resApArray & rejectApMatrix
     int rejectIndex = 0;
     int apIndex;
@@ -393,7 +398,10 @@ int rescheduleALgorithm(const int apValidMap[],  SAppointment*  resApArray) {
             rejectIndex++;
         }
     }
-
+//--------------------------------------------------------------------------------------------------------------------------
+//    printf("before fit: \n");
+//    printTimeTable(timeSize, scheduleMatrix);
+//    printf("--------------------------------------------------------------------------------------------------------------------------\n");
     //2, fit.
     // input:  scheduleMatrix ;  rejectApMatrix;
     // output: reschedule, save new time to scheduleMatrix & resApArray.
@@ -418,25 +426,28 @@ int rescheduleALgorithm(const int apValidMap[],  SAppointment*  resApArray) {
         while (find == 0 && valid == 1) {
             int forward = startTimeIndex + 5 * day;
             int backward = startTimeIndex - 5 * day;
-            for (i = 0; i < span; ++i) {
+            for (i = 0; i <= span; ++i) {
                 //not find
                 if ((backward < 0) && (forward >= timeSize)) {
-                    valid = 0;
+                    valid = 0; break;
                 }
                 if (backward >= 0) { //backwards
                     if (fitHole(backward, duration, participantArray, timeSize, scheduleMatrix)) {
                         newTimeIndex = backward;
-                        find = 1;
+                        find = 1; break;
                     }
                 }
                 if ((forward < timeSize) &&  (fitHole(forward, duration, participantArray, timeSize, scheduleMatrix))) {
                     newTimeIndex = forward;
-                    find = 1;
+                    find = 1; break;
                 }
+                backward++; forward++;
             }
 
-            backward++; forward++;
+            day++;
         }
+
+        //--------------------------------------------------------------------------------------------------------------------------
 
         //(2) input: newTimeIndex (-1 1) ----output: save the result: -> scheduleMatrix,  resApArray
         if (newTimeIndex == -1) {//invalid (fail to reschedule)
@@ -450,6 +461,9 @@ int rescheduleALgorithm(const int apValidMap[],  SAppointment*  resApArray) {
             //2' schedule matrix
             saveAppointmentTime (resApArray[rejectIndex],timeSize, scheduleMatrix);
         }
+
+//        printf("after fit appointment %d\n",apPtr -> apIndex );
+//        printTimeTable(timeSize, scheduleMatrix);
     }
 
     //3, return and free up
@@ -505,11 +519,12 @@ static int getUserIndex (char* userName) {
 
 static void saveAppointmentTime (SAppointment appointment,int timeSize, int scheduleMatrix[][timeSize]) {
     int startTimeIndex = getTimeIndex(g_startTime, appointment.startTime);
-    int endTimeIndex = (int) appointment.duration + startTimeIndex;
+//    printf("valid appointment %d start time %d.%d  %d:00  -> timeIndex %d \n", appointment.apIndex, appointment.startTime.month, appointment.startTime.day, appointment.startTime.hour, startTimeIndex);
+    int endTimeIndex = (int) appointment.duration + startTimeIndex - 1;
 
     int userIndex = getUserIndex(appointment.caller); //must have caller !
     int timeIndex;
-    for (timeIndex = startTimeIndex; timeIndex < endTimeIndex; ++timeIndex) {
+    for (timeIndex = startTimeIndex; timeIndex <= endTimeIndex; ++timeIndex) {
         if (scheduleMatrix[userIndex][timeIndex] != 0) {
             printf("reschedule algorithm -- saveAppointmentTime Error: the caller's location is not 0.\n");
             printf("userIndex %d  timeIndex %d   element %d\n", userIndex, timeIndex, scheduleMatrix[userIndex][timeIndex]);
@@ -521,12 +536,14 @@ static void saveAppointmentTime (SAppointment appointment,int timeSize, int sche
     int i;
     for (i = 0; i < appointment.numberOfCallee; ++i) {
         userIndex = getUserIndex(appointment.callee[i]);
-        if (scheduleMatrix[userIndex][timeIndex] != 0) {
-            printf("reschedule algorithm -- saveAppointmentTime Error: the callee's location is not 0.\n");
-            printf("userIndex %d  timeIndex %d   element %d\n", userIndex, timeIndex, scheduleMatrix[userIndex][timeIndex]);
-            exit(1);
+        for (timeIndex = startTimeIndex; timeIndex <= endTimeIndex; ++timeIndex) {
+            if (scheduleMatrix[userIndex][timeIndex] != 0) {
+                printf("reschedule algorithm -- saveAppointmentTime Error: the callee's location is not 0.\n");
+                printf("userIndex %d  timeIndex %d   element %d\n", userIndex, timeIndex, scheduleMatrix[userIndex][timeIndex]);
+                exit(1);
+            }
+            scheduleMatrix[userIndex][timeIndex]  = 1;
         }
-        scheduleMatrix[userIndex][timeIndex]  = 1;
     }
 }
 
@@ -534,11 +551,11 @@ static void saveAppointmentTime (SAppointment appointment,int timeSize, int sche
 //input: appointment information -> output: fit or not.
 //assumption: index in range.
 static int fitHole (int startTimeIndex, int duration, const int participantArray[],int timeSize, int scheduleMatrix[][timeSize]) {
-    int endTimeIndex = startTimeIndex + duration;
+    int endTimeIndex = startTimeIndex + duration - 1;
     int userIndex, timeIndex;
     for (userIndex = 0; userIndex < g_userNum; ++userIndex) {
         if (participantArray[userIndex] == 1) {
-            for (timeIndex = startTimeIndex; timeIndex < endTimeIndex; ++timeIndex) {
+            for (timeIndex = startTimeIndex; timeIndex <= endTimeIndex; ++timeIndex) {
                 if (scheduleMatrix[userIndex][timeIndex] == 1) {
                     return 0;
                 }
@@ -548,3 +565,31 @@ static int fitHole (int startTimeIndex, int duration, const int participantArray
     return 1;
 }
 
+
+//schedule table visualization function
+void printTimeTable (int timeSize, int scheduleMatrix[][timeSize]) {
+    int col, row;
+    printf("    ");
+    for (col = 45; col < 70; ++col) {
+        if (col % 5 == 0) {
+            printf("|  ");
+        }
+        printf("%2d  ", col);
+    }
+    printf("\n");
+    for (row = 0; row < 6; ++row) {
+        printf("%2d  ", row);
+        for (col = 45; col < 70; ++col) {
+            if (col % 5 == 0) {
+                printf("|  ");
+            }
+            if (scheduleMatrix[row][col] == 0) {
+                printf("    ");
+            } else {
+                printf("%2d  ", scheduleMatrix[row][col]);
+            }
+        }
+        printf("\n");
+    }
+    printf("\n\n");
+}
