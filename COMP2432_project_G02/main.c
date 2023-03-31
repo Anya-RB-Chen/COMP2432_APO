@@ -221,7 +221,7 @@ static void freeUpProgram() {
 }
 
 void fileInput(){
-    printf("Please input the file name: (complete directory are needed)\n");
+    printf("Please input the file name: (file_name.txt)\n");
     char file[100];
     char *path = (char *) malloc(sizeof (char )*50);
     strcat(path,"../");
