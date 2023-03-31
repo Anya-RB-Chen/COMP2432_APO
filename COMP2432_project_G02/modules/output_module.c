@@ -378,7 +378,10 @@ int rescheduleALgorithm(const int apValidMap[],  SAppointment**  resApPtr) {
 
     int timeSize = getTimeSpan(g_startTime, g_endTime);
     int (*scheduleMatrix)[timeSize] = calloc(g_userNum, sizeof *scheduleMatrix);
+<<<<<<< HEAD
     //------------------------------------------------------------------------------------------------------------
+=======
+>>>>>>> d6ef8eba286473f588bbc7e80f07c20c2b21f9db
 //    printTimeTable(timeSize, scheduleMatrix);
 
 //--------------------------------------------------------------------------------------------------------------------------
@@ -407,10 +410,13 @@ int rescheduleALgorithm(const int apValidMap[],  SAppointment**  resApPtr) {
 
             rejectIndex++;
         }
+<<<<<<< HEAD
 
         //------------------------------------------------------------------------------------------------------------
 //        printTimeTable(timeSize, scheduleMatrix);
         //------------------------------------------------------------------------------------------------------------
+=======
+>>>>>>> d6ef8eba286473f588bbc7e80f07c20c2b21f9db
     }
 //--------------------------------------------------------------------------------------------------------------------------
 //    printf("before fit: \n");
@@ -475,9 +481,15 @@ int rescheduleALgorithm(const int apValidMap[],  SAppointment**  resApPtr) {
             //2' schedule matrix
             saveAppointmentTime (resApArray[rejectIndex],timeSize, scheduleMatrix);
         }
+<<<<<<< HEAD
 //------------------------------------------------------------------------------------------------------------
         printf("after fit appointment %d\n",apPtr -> apIndex );
         printTimeTable(timeSize, scheduleMatrix);
+=======
+
+//        printf("after fit appointment %d\n",apPtr -> apIndex );
+//        printTimeTable(timeSize, scheduleMatrix);
+>>>>>>> d6ef8eba286473f588bbc7e80f07c20c2b21f9db
     }
 
     //3, return and free up

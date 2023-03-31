@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="COMP2432_project_G02"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="COMP2432_project_G02">
+				<Option output="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/COMP2432_project_G02" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 COMP2432_project_G02"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="COMP2432_project_G02/fast">
+				<Option output="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/COMP2432_project_G02" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 COMP2432_project_G02/fast"/>
+					<CompileFile command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j8 -f &quot;/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/classes/appointment.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/classes/appointment.h">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/classes/scheduling.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/classes/scheduling.h">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/classes/time_type.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/classes/time_type.h">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/main.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/main.h">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/modules/appointment_module.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/modules/modules.h">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/modules/output_module.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/modules/schedule_module.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/protocol/coding_tools.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/protocol/coding_tools.h">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/protocol/protocol.h">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/protocol/schedule_requiring_protocol.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/userProcess.c">
+			<Option target="COMP2432_project_G02"/>
+		</Unit>
+		<Unit filename="/Users/yuanyunchen/Desktop/GitHub/COMP2432_APO/COMP2432_project_G02/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

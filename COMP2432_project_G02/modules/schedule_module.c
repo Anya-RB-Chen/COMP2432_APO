@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 
+
 static SCHEDULING_ALGORITHM interpretScheduleInstruction (char* instruction);
 static void analyseSchedule (SCHEDULING_ALGORITHM algorithm);
 static int rescheduling( int (*scheduleMatrix)[g_apNum],SAppointment* rescheduledAppointments);
@@ -102,9 +103,42 @@ static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
 
     }
 
+    //--------------------------------------------------------------------------------------------------------------------------
+    //rescheduling algorithm unit test:
+    // input preparation
 
+    int appointmentMap[g_apNum];
+    int apIndex, reject = 0;
+    for (apIndex = 0; apIndex < g_apNum; ++apIndex) {
+        reject = 0;
+        for (userIndex = 0; userIndex < g_userNum; ++userIndex) {
+            if (scheduleMatrix[userIndex][apIndex] == 0) {
+                reject = 1;
+                break;
+            }
+        }
+        if (reject == 1) {
+            appointmentMap[apIndex] = 0;
+        } else {
+            appointmentMap[apIndex] = 1;
+        }
+    }
+
+    //input: apValidMap, scheduleMatrix.
+    SAppointment *  rescheduledAppointmentArray;
+    int numOfRescheduled = rescheduleALgorithm(appointmentMap, &rescheduledAppointmentArray);
+
+
+//    //output:
+//    for (apIndex = 0; apIndex < numOfRescheduled; apIndex++) {
+//        SAppointment ap = rescheduledAppointmentArray[apIndex];
+//        STime startTime = ap.startTime;
+//        printf("appointment %d  -> start from %d.%d  %d:00\n", ap.apIndex, startTime.month, startTime.day, startTime.hour);
+//    }
+
+    //--------------------------------------------------------------------------------------------------------------------------
     //(4) output:
-    outputModule(g_userNum, g_apNum, scheduleMatrix,algorithm);
+//    outputModule(g_userNum, g_apNum, scheduleMatrix,algorithm);
 
 
     //(5) free up
@@ -129,9 +163,4 @@ static void analyseSchedule (SCHEDULING_ALGORITHM algorithm) {
 ////1 -- accecpt, 0 -- reject, -1 -- not included
 //appoinment information array:  global variable -- g_apNum, g_appointmentArray
 
-//output: rescheduledAppointments -- save the appointments to the  rescheduledAppointments (need malloc), return array size.
-static int rescheduling( int (*scheduleMatrix)[g_apNum],SAppointment* rescheduledAppointments) {
-
-    return 0;
-}
 //--------------------------------------------------------------------------------------------------------------------------

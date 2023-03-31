@@ -24,10 +24,6 @@ int g_userNum;
 //related function
 
 //(3) IPC
-//int* g_p2c_fd; //pointer of pipe from parent to child
-//int* g_c2p_fd; //pointer of pipe from child to parent;
-//const int P2C_BUFFER_SIZE = 800;
-//const int C2P_BUFFER_SIZE = 800;
 
 //(4) appointment
 int g_apNum;
@@ -37,8 +33,6 @@ void fileInput();
 
 //static function/ variable declaration.
 
-
-//--------------------------------------implement---------------------------------------------------------------------
 
 //function implement.
 
