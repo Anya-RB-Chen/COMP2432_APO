@@ -1,0 +1,118 @@
+Period 202023-05-01 to 202023-05-31
+Algorithm used: Priority
+
+***Appointment Schedule***
+
+	Paul, you have 0 appointments. You need to attend them as your schedule.
+Date         Start   End     Type             People
+=========================================================================
+
+                     - End of Paul’s Schedule -                       
+=========================================================================
+
+	Mary, you have 4 appointments. You need to attend them as your schedule.
+Date         Start   End     Type             People
+=========================================================================
+202023-05-10   18:00   19:00   Private Time  Mary 
+202023-05-12   18:00   21:00   Project Meeting  Mary Lucy 
+202023-05-12   21:00   23:00   Project Meeting  Lucy John Mary 
+202023-05-14   18:00   20:00   Group Study  Shaby Mary John 
+
+                     - End of Mary’s Schedule -                       
+=========================================================================
+
+	Lucy, you have 4 appointments. You need to attend them as your schedule.
+Date         Start   End     Type             People
+=========================================================================
+202023-05-10   20:00   22:00   Project Meeting  Lucy John 
+202023-05-11   18:00   20:00   Group Study  Lucy John 
+202023-05-12   18:00   21:00   Project Meeting  Mary Lucy 
+202023-05-12   21:00   23:00   Project Meeting  Lucy John Mary 
+
+                     - End of Lucy’s Schedule -                       
+=========================================================================
+
+	John, you have 4 appointments. You need to attend them as your schedule.
+Date         Start   End     Type             People
+=========================================================================
+202023-05-10   20:00   22:00   Project Meeting  Lucy John 
+202023-05-11   18:00   20:00   Group Study  Lucy John 
+202023-05-12   21:00   23:00   Project Meeting  Lucy John Mary 
+202023-05-14   18:00   20:00   Group Study  Shaby Mary John 
+
+                     - End of John’s Schedule -                       
+=========================================================================
+
+	Jack, you have 1 appointments. You need to attend them as your schedule.
+Date         Start   End     Type             People
+=========================================================================
+202023-05-13   18:00   22:00   Private Time  Jack 
+
+                     - End of Jack’s Schedule -                       
+=========================================================================
+
+	Shaby, you have 1 appointments. You need to attend them as your schedule.
+Date         Start   End     Type             People
+=========================================================================
+202023-05-14   18:00   20:00   Group Study  Shaby Mary John 
+
+                     - End of Shaby’s Schedule -                       
+=========================================================================
+
+
+***Rejected List***
+
+Altogether there are 3 appointments rejected.
+=========================================================================
+1. Group Study Paul 202023-05-10 18:00 0 John Jack
+2. Group Study Mary 202023-05-12 20:00 0 John
+3. Group Study John 202023-05-12 21:00 0 Jack Shaby
+4. Group Study John 202023-05-12 21:00 0 Jack Shaby
+
+
+
+
+
+
+                          - End of Rejected List -                       
+=========================================================================
+
+
+***Performance***
+
+Total Number of Requests Received: 10
+Total Number of Requests Accepted: 7 (70.00%)
+Total Number of Requests Rejected: 3 (30.00%)
+
+
+
+Number of Requests Accepted by Individual:
+
+	Paul 			 0
+	Mary 			 4
+	Lucy 			 4
+	John 			 4
+	Jack 			 1
+	Shaby 			 1
+
+
+
+Utilization of Time Slot:
+
+	Paul 			 0.00%
+	Mary 			 100.00%
+	Lucy 			 100.00%
+	John 			 100.00%
+	Jack 			 44.44%
+	Shaby 			 50.00%
+
+
+
+
+***Rescheduled List***
+
+There are 3 appointments to be rescheduled.
+=========================================================================
+1. Group Study  Paul  202023-05-09  18:00  3.0 John Jack
+2. Group Study  Mary  202023-05-13  18:00  2.0 John
+3. Group Study  John  202023-05-12  18:00  2.0 Jack Shaby
