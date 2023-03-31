@@ -1,0 +1,11 @@
+privateTime mary 20230510 1800 1.0
+groupStudy paul 20230510 1800 3.0 john jack
+projectMeeting lucy 20230510 2000 2.0 john
+groupStudy lucy 20230511 1800 2.0 john
+projectMeeting mary 20230512 1800 3.0 lucy
+groupStudy mary 20230512 2000 2.0 john
+projectMeeting lucy 20230512 2100 2.0 john mary
+gathering john 20230512 2100 2.0 jack shaby
+privateTime jack 20230513 1800 4.0
+gathering shaby 20230514 1800 2.0 mary john
+printSchd ALL

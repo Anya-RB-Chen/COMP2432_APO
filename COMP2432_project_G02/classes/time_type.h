@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+//#include "../protocol/protocol.h"
 
 typedef struct STime {
 //    char standardForm[]; //one choice

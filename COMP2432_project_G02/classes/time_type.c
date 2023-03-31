@@ -5,6 +5,24 @@
 #include "time_type.h"
 
 
+char* int2String(int num,char *str)
+{
+    int i = 0;
+    do
+    {
+        str[i++] = num%10+48;
+        num /= 10;
+    }while(num);
+    str[i] = '\0';
+    int j = 0;
+    for(;j<i/2;j++)
+    {
+        str[j] = str[j] + str[i-1-j];
+        str[i-1-j] = str[j] - str[i-1-j];
+        str[j] = str[j] - str[i-1-j];
+    }
+    return str;
+}
 
 STime getTime (char* date, char* hour){
     STime a;
@@ -12,6 +30,7 @@ STime getTime (char* date, char* hour){
     int hour_i = atol(hour);
     int year = date_i/10000;
     int month = date_i/100%100;
+//    printf("%d\n", month);
     int day = date_i%100;
     int hour_in = hour_i/100%100;
     int min = hour_i%100;
@@ -107,7 +126,6 @@ int timeComparison (STime time1, STime time2){
 }
 
 char* dateToString(STime time){
-
     // Used for the output module
     char* str = (char*)calloc(20, sizeof(char));
     char year_c[5], month_c[3], day_c[3];
@@ -129,14 +147,11 @@ char* dateToString(STime time){
 
 char* timeToString(STime time){
     // Used for the output module
-    char* str = (char*)calloc(20, sizeof(char));
-    char hour_c[3], min_c[3];
-    sprintf(hour_c, "%d", time.hour);
-    sprintf(min_c, "%d", time.minute);
-    if (time.hour < 10) strcat(str, "0");
-    strcat(str, hour_c);
-    strcat(str, ":");
-    if (time.minute < 10) strcat(str, "0");
-    strcat(str, min_c);
-    return str;
+    char *res = (char*)malloc(sizeof (char )*6);
+    char buf[3];
+    char *hour = int2String(time.hour,buf);
+    strcat(res,hour);
+    strcat(res,":00");
+    printf("inside function %s\n",res);
+    return res;
 }

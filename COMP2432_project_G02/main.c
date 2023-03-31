@@ -103,8 +103,8 @@ static void initialize(int argc, char* argv[]) { //!!! pass array of string to f
     //1' time
 
     // 为了测试comment掉
-//    g_startTime = getTimeFromStandardForm(argv[1]);
-//    g_endTime = getTimeFromStandardForm(argv[2]);
+    g_startTime = getTimeFromStandardForm(argv[1]);
+    g_endTime = getTimeFromStandardForm(argv[2]);
 
     //2' user
     g_userNum = argc - 3;
@@ -117,6 +117,9 @@ static void initialize(int argc, char* argv[]) { //!!! pass array of string to f
     int i;
     for (i = 3; i < argc; ++i) {
         strcpy(g_nameMap[i - 3], argv[i]);
+        if (g_nameMap[i-3][0] >= 97 && g_nameMap[i-3][0] <= 122){
+            g_nameMap[i-3][0] -= 32;
+        }
     }
 
     //3' IPC pointer
@@ -219,10 +222,13 @@ static void freeUpProgram() {
 
 void fileInput(){
     printf("Please input the file name: (complete directory are needed)\n");
-    char dir[100];
-    scanf("%s",dir);
+    char file[100];
+    char *path = (char *) malloc(sizeof (char )*50);
+    strcat(path,"../");
+    scanf("%s",file);
+    strcat(path,file);
     FILE *fp;
-    fp = fopen(dir,"r");
+    fp = fopen(path,"r");
     if (fp == NULL){
         perror("Cannot open the file. Please check the file directory.\n");
         exit(1);
@@ -252,7 +258,7 @@ void fileInput(){
             default:
                 printf("Invalid instruction format. Input again !\n");
         }
-        sleep(1);
+        usleep(100);
     }
     fclose(fp);
 }

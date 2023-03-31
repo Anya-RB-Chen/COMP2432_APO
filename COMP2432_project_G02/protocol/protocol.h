@@ -21,7 +21,7 @@ void  appointmentNotification_protocol_API_(SAppointment ap,  int wp);
 //process : read,  decoding, return.
 SAppointment appointmentNotification_protocol_interpret_request (int rp);
 
-
+char* Int2String(int num,char *str);
 //2, schudule requring protocol
 
 //server API

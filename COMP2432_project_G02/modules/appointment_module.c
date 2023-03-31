@@ -86,7 +86,9 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
         a.caller[i] = instruction[count];
         count++; // move the pointer
     }
-
+    if (a.caller[0] >= 97 && a.caller[0] <= 122){
+        a.caller[0] -= 32;
+    }
 
     //get two time
     char date[9], hour[5];
@@ -159,6 +161,9 @@ SAppointment interpretAppointmentInstruction (char* instruction) {
                 temp[k] = instruction[count];
                 count++;
                 k++;
+            }
+            if (temp[0] >= 97 && temp[0] <= 122){
+                temp[0] -= 32;
             }
             strcpy(a.callee[num],temp);
             num++;
